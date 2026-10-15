@@ -59,7 +59,8 @@ export async function POST(request: NextRequest) {
       method: "POST",
       headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
       body: JSON.stringify({
-        model, temperature: 0, max_tokens: 256,
+        // Nemotron may use part of this budget for reasoning before emitting JSON.
+        model, temperature: 0, max_tokens: 1024,
         messages: [
           { role: "system", content: "Diagnose a fixed PyTorch GPU workload. Return one JSON object with only strategy and explanation. Strategy must be tile_nearest, tile_radius_count, or no_repair. Choose tile_nearest only for a nearest-index output contract, tile_radius_count only for a radius-count output contract, and no_repair if neither preserves the required output. Do not write code. Independent validation decides acceptance." },
           { role: "user", content: JSON.stringify({
