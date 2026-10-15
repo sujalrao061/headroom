@@ -24,6 +24,8 @@ A separate [attention GPU report](evidence/attention-gpu.json) exercises a secon
 
 The [live attention decision](evidence/attention-decision-live.json) shows that NVIDIA Nemotron, called through Nebius Token Factory, selected SDPA from the saved raw measurements, agreeing with the independent measured choice. The decision report's SHA-256 matches the current GPU evidence file, and no key is stored in it. This one-case agreement does not establish a model advantage over the deterministic selector. The workbench displays this as a recorded local run; a fresh model-backed run requires a runner started with a private key.
 
+The public [correctness gauntlet](evidence/contract-gauntlet.json) adds 250/250 passing comparisons for nearest-neighbor and radius-count candidates, covering eight irregular shapes, three deterministic seeds, five tile sizes, and adversarial cross-tile boundary cases on an RTX 3050 Ti. It also verifies that injected regressions for skipped nearest tiles and an exclusive radius boundary are detected. This increases confidence in those fixed implementations; it is not universal correctness proof, a performance measurement, or an unfamiliar-workload generalization result. Reproduce it with `python -m scripts.run_contract_gauntlet`.
+
 ## Architecture and safety
 
 - **Frontend:** Next.js, React, TypeScript. Guest use needs no login, phone number, email address, or file upload.

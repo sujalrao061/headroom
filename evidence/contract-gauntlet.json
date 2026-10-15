@@ -1,0 +1,2541 @@
+{
+  "captured_at_utc": "2026-10-15T15:58:53.118759+00:00",
+  "scope": "Deterministic fixed-workload contract stress checks; correctness evidence only, not a performance benchmark or proof for all inputs.",
+  "device": "NVIDIA GeForce RTX 3050 Ti Laptop GPU",
+  "torch_version": "2.7.1+cu118",
+  "python_version": "3.12.14",
+  "parameters": {
+    "random_shapes": 8,
+    "seeds_per_shape": 3,
+    "tile_sizes": [
+      7,
+      31,
+      64,
+      127,
+      128
+    ],
+    "cases": [
+      "nearest",
+      "radius"
+    ]
+  },
+  "passed": true,
+  "checks_passed": 250,
+  "checks_total": 250,
+  "regression_sensitivity": {
+    "nearest_that_ignores_later_reference_tiles_detected": true,
+    "radius_that_excludes_exact_boundary_detected": true
+  },
+  "trials": [
+    {
+      "case": "nearest",
+      "shape": [
+        1,
+        3
+      ],
+      "seed": 3,
+      "tile": 7,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        1,
+        3
+      ],
+      "seed": 3,
+      "tile": 31,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        1,
+        3
+      ],
+      "seed": 3,
+      "tile": 64,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        1,
+        3
+      ],
+      "seed": 3,
+      "tile": 127,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        1,
+        3
+      ],
+      "seed": 3,
+      "tile": 128,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        1,
+        3
+      ],
+      "seed": 17,
+      "tile": 7,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        1,
+        3
+      ],
+      "seed": 17,
+      "tile": 31,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        1,
+        3
+      ],
+      "seed": 17,
+      "tile": 64,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        1,
+        3
+      ],
+      "seed": 17,
+      "tile": 127,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        1,
+        3
+      ],
+      "seed": 17,
+      "tile": 128,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        1,
+        3
+      ],
+      "seed": 41,
+      "tile": 7,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        1,
+        3
+      ],
+      "seed": 41,
+      "tile": 31,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        1,
+        3
+      ],
+      "seed": 41,
+      "tile": 64,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        1,
+        3
+      ],
+      "seed": 41,
+      "tile": 127,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        1,
+        3
+      ],
+      "seed": 41,
+      "tile": 128,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        7,
+        11
+      ],
+      "seed": 3,
+      "tile": 7,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        7,
+        11
+      ],
+      "seed": 3,
+      "tile": 31,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        7,
+        11
+      ],
+      "seed": 3,
+      "tile": 64,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        7,
+        11
+      ],
+      "seed": 3,
+      "tile": 127,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        7,
+        11
+      ],
+      "seed": 3,
+      "tile": 128,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        7,
+        11
+      ],
+      "seed": 17,
+      "tile": 7,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        7,
+        11
+      ],
+      "seed": 17,
+      "tile": 31,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        7,
+        11
+      ],
+      "seed": 17,
+      "tile": 64,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        7,
+        11
+      ],
+      "seed": 17,
+      "tile": 127,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        7,
+        11
+      ],
+      "seed": 17,
+      "tile": 128,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        7,
+        11
+      ],
+      "seed": 41,
+      "tile": 7,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        7,
+        11
+      ],
+      "seed": 41,
+      "tile": 31,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        7,
+        11
+      ],
+      "seed": 41,
+      "tile": 64,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        7,
+        11
+      ],
+      "seed": 41,
+      "tile": 127,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        7,
+        11
+      ],
+      "seed": 41,
+      "tile": 128,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        31,
+        33
+      ],
+      "seed": 3,
+      "tile": 7,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        31,
+        33
+      ],
+      "seed": 3,
+      "tile": 31,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        31,
+        33
+      ],
+      "seed": 3,
+      "tile": 64,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        31,
+        33
+      ],
+      "seed": 3,
+      "tile": 127,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        31,
+        33
+      ],
+      "seed": 3,
+      "tile": 128,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        31,
+        33
+      ],
+      "seed": 17,
+      "tile": 7,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        31,
+        33
+      ],
+      "seed": 17,
+      "tile": 31,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        31,
+        33
+      ],
+      "seed": 17,
+      "tile": 64,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        31,
+        33
+      ],
+      "seed": 17,
+      "tile": 127,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        31,
+        33
+      ],
+      "seed": 17,
+      "tile": 128,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        31,
+        33
+      ],
+      "seed": 41,
+      "tile": 7,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        31,
+        33
+      ],
+      "seed": 41,
+      "tile": 31,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        31,
+        33
+      ],
+      "seed": 41,
+      "tile": 64,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        31,
+        33
+      ],
+      "seed": 41,
+      "tile": 127,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        31,
+        33
+      ],
+      "seed": 41,
+      "tile": 128,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        63,
+        65
+      ],
+      "seed": 3,
+      "tile": 7,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        63,
+        65
+      ],
+      "seed": 3,
+      "tile": 31,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        63,
+        65
+      ],
+      "seed": 3,
+      "tile": 64,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        63,
+        65
+      ],
+      "seed": 3,
+      "tile": 127,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        63,
+        65
+      ],
+      "seed": 3,
+      "tile": 128,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        63,
+        65
+      ],
+      "seed": 17,
+      "tile": 7,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        63,
+        65
+      ],
+      "seed": 17,
+      "tile": 31,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        63,
+        65
+      ],
+      "seed": 17,
+      "tile": 64,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        63,
+        65
+      ],
+      "seed": 17,
+      "tile": 127,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        63,
+        65
+      ],
+      "seed": 17,
+      "tile": 128,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        63,
+        65
+      ],
+      "seed": 41,
+      "tile": 7,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        63,
+        65
+      ],
+      "seed": 41,
+      "tile": 31,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        63,
+        65
+      ],
+      "seed": 41,
+      "tile": 64,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        63,
+        65
+      ],
+      "seed": 41,
+      "tile": 127,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        63,
+        65
+      ],
+      "seed": 41,
+      "tile": 128,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        127,
+        129
+      ],
+      "seed": 3,
+      "tile": 7,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        127,
+        129
+      ],
+      "seed": 3,
+      "tile": 31,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        127,
+        129
+      ],
+      "seed": 3,
+      "tile": 64,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        127,
+        129
+      ],
+      "seed": 3,
+      "tile": 127,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        127,
+        129
+      ],
+      "seed": 3,
+      "tile": 128,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        127,
+        129
+      ],
+      "seed": 17,
+      "tile": 7,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        127,
+        129
+      ],
+      "seed": 17,
+      "tile": 31,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        127,
+        129
+      ],
+      "seed": 17,
+      "tile": 64,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        127,
+        129
+      ],
+      "seed": 17,
+      "tile": 127,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        127,
+        129
+      ],
+      "seed": 17,
+      "tile": 128,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        127,
+        129
+      ],
+      "seed": 41,
+      "tile": 7,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        127,
+        129
+      ],
+      "seed": 41,
+      "tile": 31,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        127,
+        129
+      ],
+      "seed": 41,
+      "tile": 64,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        127,
+        129
+      ],
+      "seed": 41,
+      "tile": 127,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        127,
+        129
+      ],
+      "seed": 41,
+      "tile": 128,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        128,
+        130
+      ],
+      "seed": 3,
+      "tile": 7,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        128,
+        130
+      ],
+      "seed": 3,
+      "tile": 31,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        128,
+        130
+      ],
+      "seed": 3,
+      "tile": 64,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        128,
+        130
+      ],
+      "seed": 3,
+      "tile": 127,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        128,
+        130
+      ],
+      "seed": 3,
+      "tile": 128,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        128,
+        130
+      ],
+      "seed": 17,
+      "tile": 7,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        128,
+        130
+      ],
+      "seed": 17,
+      "tile": 31,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        128,
+        130
+      ],
+      "seed": 17,
+      "tile": 64,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        128,
+        130
+      ],
+      "seed": 17,
+      "tile": 127,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        128,
+        130
+      ],
+      "seed": 17,
+      "tile": 128,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        128,
+        130
+      ],
+      "seed": 41,
+      "tile": 7,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        128,
+        130
+      ],
+      "seed": 41,
+      "tile": 31,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        128,
+        130
+      ],
+      "seed": 41,
+      "tile": 64,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        128,
+        130
+      ],
+      "seed": 41,
+      "tile": 127,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        128,
+        130
+      ],
+      "seed": 41,
+      "tile": 128,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        129,
+        131
+      ],
+      "seed": 3,
+      "tile": 7,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        129,
+        131
+      ],
+      "seed": 3,
+      "tile": 31,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        129,
+        131
+      ],
+      "seed": 3,
+      "tile": 64,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        129,
+        131
+      ],
+      "seed": 3,
+      "tile": 127,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        129,
+        131
+      ],
+      "seed": 3,
+      "tile": 128,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        129,
+        131
+      ],
+      "seed": 17,
+      "tile": 7,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        129,
+        131
+      ],
+      "seed": 17,
+      "tile": 31,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        129,
+        131
+      ],
+      "seed": 17,
+      "tile": 64,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        129,
+        131
+      ],
+      "seed": 17,
+      "tile": 127,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        129,
+        131
+      ],
+      "seed": 17,
+      "tile": 128,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        129,
+        131
+      ],
+      "seed": 41,
+      "tile": 7,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        129,
+        131
+      ],
+      "seed": 41,
+      "tile": 31,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        129,
+        131
+      ],
+      "seed": 41,
+      "tile": 64,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        129,
+        131
+      ],
+      "seed": 41,
+      "tile": 127,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        129,
+        131
+      ],
+      "seed": 41,
+      "tile": 128,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        255,
+        257
+      ],
+      "seed": 3,
+      "tile": 7,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        255,
+        257
+      ],
+      "seed": 3,
+      "tile": 31,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        255,
+        257
+      ],
+      "seed": 3,
+      "tile": 64,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        255,
+        257
+      ],
+      "seed": 3,
+      "tile": 127,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        255,
+        257
+      ],
+      "seed": 3,
+      "tile": 128,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        255,
+        257
+      ],
+      "seed": 17,
+      "tile": 7,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        255,
+        257
+      ],
+      "seed": 17,
+      "tile": 31,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        255,
+        257
+      ],
+      "seed": 17,
+      "tile": 64,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        255,
+        257
+      ],
+      "seed": 17,
+      "tile": 127,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        255,
+        257
+      ],
+      "seed": 17,
+      "tile": 128,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        255,
+        257
+      ],
+      "seed": 41,
+      "tile": 7,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        255,
+        257
+      ],
+      "seed": 41,
+      "tile": 31,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        255,
+        257
+      ],
+      "seed": 41,
+      "tile": 64,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        255,
+        257
+      ],
+      "seed": 41,
+      "tile": 127,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        255,
+        257
+      ],
+      "seed": 41,
+      "tile": 128,
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        130,
+        131
+      ],
+      "seed": null,
+      "tile": 7,
+      "kind": "adversarial-boundary",
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        130,
+        131
+      ],
+      "seed": null,
+      "tile": 31,
+      "kind": "adversarial-boundary",
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        130,
+        131
+      ],
+      "seed": null,
+      "tile": 64,
+      "kind": "adversarial-boundary",
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        130,
+        131
+      ],
+      "seed": null,
+      "tile": 127,
+      "kind": "adversarial-boundary",
+      "passed": true
+    },
+    {
+      "case": "nearest",
+      "shape": [
+        130,
+        131
+      ],
+      "seed": null,
+      "tile": 128,
+      "kind": "adversarial-boundary",
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        1,
+        3
+      ],
+      "seed": 3,
+      "tile": 7,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        1,
+        3
+      ],
+      "seed": 3,
+      "tile": 31,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        1,
+        3
+      ],
+      "seed": 3,
+      "tile": 64,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        1,
+        3
+      ],
+      "seed": 3,
+      "tile": 127,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        1,
+        3
+      ],
+      "seed": 3,
+      "tile": 128,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        1,
+        3
+      ],
+      "seed": 17,
+      "tile": 7,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        1,
+        3
+      ],
+      "seed": 17,
+      "tile": 31,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        1,
+        3
+      ],
+      "seed": 17,
+      "tile": 64,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        1,
+        3
+      ],
+      "seed": 17,
+      "tile": 127,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        1,
+        3
+      ],
+      "seed": 17,
+      "tile": 128,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        1,
+        3
+      ],
+      "seed": 41,
+      "tile": 7,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        1,
+        3
+      ],
+      "seed": 41,
+      "tile": 31,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        1,
+        3
+      ],
+      "seed": 41,
+      "tile": 64,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        1,
+        3
+      ],
+      "seed": 41,
+      "tile": 127,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        1,
+        3
+      ],
+      "seed": 41,
+      "tile": 128,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        7,
+        11
+      ],
+      "seed": 3,
+      "tile": 7,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        7,
+        11
+      ],
+      "seed": 3,
+      "tile": 31,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        7,
+        11
+      ],
+      "seed": 3,
+      "tile": 64,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        7,
+        11
+      ],
+      "seed": 3,
+      "tile": 127,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        7,
+        11
+      ],
+      "seed": 3,
+      "tile": 128,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        7,
+        11
+      ],
+      "seed": 17,
+      "tile": 7,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        7,
+        11
+      ],
+      "seed": 17,
+      "tile": 31,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        7,
+        11
+      ],
+      "seed": 17,
+      "tile": 64,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        7,
+        11
+      ],
+      "seed": 17,
+      "tile": 127,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        7,
+        11
+      ],
+      "seed": 17,
+      "tile": 128,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        7,
+        11
+      ],
+      "seed": 41,
+      "tile": 7,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        7,
+        11
+      ],
+      "seed": 41,
+      "tile": 31,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        7,
+        11
+      ],
+      "seed": 41,
+      "tile": 64,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        7,
+        11
+      ],
+      "seed": 41,
+      "tile": 127,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        7,
+        11
+      ],
+      "seed": 41,
+      "tile": 128,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        31,
+        33
+      ],
+      "seed": 3,
+      "tile": 7,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        31,
+        33
+      ],
+      "seed": 3,
+      "tile": 31,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        31,
+        33
+      ],
+      "seed": 3,
+      "tile": 64,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        31,
+        33
+      ],
+      "seed": 3,
+      "tile": 127,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        31,
+        33
+      ],
+      "seed": 3,
+      "tile": 128,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        31,
+        33
+      ],
+      "seed": 17,
+      "tile": 7,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        31,
+        33
+      ],
+      "seed": 17,
+      "tile": 31,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        31,
+        33
+      ],
+      "seed": 17,
+      "tile": 64,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        31,
+        33
+      ],
+      "seed": 17,
+      "tile": 127,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        31,
+        33
+      ],
+      "seed": 17,
+      "tile": 128,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        31,
+        33
+      ],
+      "seed": 41,
+      "tile": 7,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        31,
+        33
+      ],
+      "seed": 41,
+      "tile": 31,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        31,
+        33
+      ],
+      "seed": 41,
+      "tile": 64,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        31,
+        33
+      ],
+      "seed": 41,
+      "tile": 127,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        31,
+        33
+      ],
+      "seed": 41,
+      "tile": 128,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        63,
+        65
+      ],
+      "seed": 3,
+      "tile": 7,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        63,
+        65
+      ],
+      "seed": 3,
+      "tile": 31,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        63,
+        65
+      ],
+      "seed": 3,
+      "tile": 64,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        63,
+        65
+      ],
+      "seed": 3,
+      "tile": 127,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        63,
+        65
+      ],
+      "seed": 3,
+      "tile": 128,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        63,
+        65
+      ],
+      "seed": 17,
+      "tile": 7,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        63,
+        65
+      ],
+      "seed": 17,
+      "tile": 31,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        63,
+        65
+      ],
+      "seed": 17,
+      "tile": 64,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        63,
+        65
+      ],
+      "seed": 17,
+      "tile": 127,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        63,
+        65
+      ],
+      "seed": 17,
+      "tile": 128,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        63,
+        65
+      ],
+      "seed": 41,
+      "tile": 7,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        63,
+        65
+      ],
+      "seed": 41,
+      "tile": 31,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        63,
+        65
+      ],
+      "seed": 41,
+      "tile": 64,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        63,
+        65
+      ],
+      "seed": 41,
+      "tile": 127,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        63,
+        65
+      ],
+      "seed": 41,
+      "tile": 128,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        127,
+        129
+      ],
+      "seed": 3,
+      "tile": 7,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        127,
+        129
+      ],
+      "seed": 3,
+      "tile": 31,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        127,
+        129
+      ],
+      "seed": 3,
+      "tile": 64,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        127,
+        129
+      ],
+      "seed": 3,
+      "tile": 127,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        127,
+        129
+      ],
+      "seed": 3,
+      "tile": 128,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        127,
+        129
+      ],
+      "seed": 17,
+      "tile": 7,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        127,
+        129
+      ],
+      "seed": 17,
+      "tile": 31,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        127,
+        129
+      ],
+      "seed": 17,
+      "tile": 64,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        127,
+        129
+      ],
+      "seed": 17,
+      "tile": 127,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        127,
+        129
+      ],
+      "seed": 17,
+      "tile": 128,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        127,
+        129
+      ],
+      "seed": 41,
+      "tile": 7,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        127,
+        129
+      ],
+      "seed": 41,
+      "tile": 31,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        127,
+        129
+      ],
+      "seed": 41,
+      "tile": 64,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        127,
+        129
+      ],
+      "seed": 41,
+      "tile": 127,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        127,
+        129
+      ],
+      "seed": 41,
+      "tile": 128,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        128,
+        130
+      ],
+      "seed": 3,
+      "tile": 7,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        128,
+        130
+      ],
+      "seed": 3,
+      "tile": 31,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        128,
+        130
+      ],
+      "seed": 3,
+      "tile": 64,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        128,
+        130
+      ],
+      "seed": 3,
+      "tile": 127,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        128,
+        130
+      ],
+      "seed": 3,
+      "tile": 128,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        128,
+        130
+      ],
+      "seed": 17,
+      "tile": 7,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        128,
+        130
+      ],
+      "seed": 17,
+      "tile": 31,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        128,
+        130
+      ],
+      "seed": 17,
+      "tile": 64,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        128,
+        130
+      ],
+      "seed": 17,
+      "tile": 127,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        128,
+        130
+      ],
+      "seed": 17,
+      "tile": 128,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        128,
+        130
+      ],
+      "seed": 41,
+      "tile": 7,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        128,
+        130
+      ],
+      "seed": 41,
+      "tile": 31,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        128,
+        130
+      ],
+      "seed": 41,
+      "tile": 64,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        128,
+        130
+      ],
+      "seed": 41,
+      "tile": 127,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        128,
+        130
+      ],
+      "seed": 41,
+      "tile": 128,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        129,
+        131
+      ],
+      "seed": 3,
+      "tile": 7,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        129,
+        131
+      ],
+      "seed": 3,
+      "tile": 31,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        129,
+        131
+      ],
+      "seed": 3,
+      "tile": 64,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        129,
+        131
+      ],
+      "seed": 3,
+      "tile": 127,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        129,
+        131
+      ],
+      "seed": 3,
+      "tile": 128,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        129,
+        131
+      ],
+      "seed": 17,
+      "tile": 7,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        129,
+        131
+      ],
+      "seed": 17,
+      "tile": 31,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        129,
+        131
+      ],
+      "seed": 17,
+      "tile": 64,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        129,
+        131
+      ],
+      "seed": 17,
+      "tile": 127,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        129,
+        131
+      ],
+      "seed": 17,
+      "tile": 128,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        129,
+        131
+      ],
+      "seed": 41,
+      "tile": 7,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        129,
+        131
+      ],
+      "seed": 41,
+      "tile": 31,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        129,
+        131
+      ],
+      "seed": 41,
+      "tile": 64,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        129,
+        131
+      ],
+      "seed": 41,
+      "tile": 127,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        129,
+        131
+      ],
+      "seed": 41,
+      "tile": 128,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        255,
+        257
+      ],
+      "seed": 3,
+      "tile": 7,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        255,
+        257
+      ],
+      "seed": 3,
+      "tile": 31,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        255,
+        257
+      ],
+      "seed": 3,
+      "tile": 64,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        255,
+        257
+      ],
+      "seed": 3,
+      "tile": 127,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        255,
+        257
+      ],
+      "seed": 3,
+      "tile": 128,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        255,
+        257
+      ],
+      "seed": 17,
+      "tile": 7,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        255,
+        257
+      ],
+      "seed": 17,
+      "tile": 31,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        255,
+        257
+      ],
+      "seed": 17,
+      "tile": 64,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        255,
+        257
+      ],
+      "seed": 17,
+      "tile": 127,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        255,
+        257
+      ],
+      "seed": 17,
+      "tile": 128,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        255,
+        257
+      ],
+      "seed": 41,
+      "tile": 7,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        255,
+        257
+      ],
+      "seed": 41,
+      "tile": 31,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        255,
+        257
+      ],
+      "seed": 41,
+      "tile": 64,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        255,
+        257
+      ],
+      "seed": 41,
+      "tile": 127,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        255,
+        257
+      ],
+      "seed": 41,
+      "tile": 128,
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        130,
+        131
+      ],
+      "seed": null,
+      "tile": 7,
+      "kind": "adversarial-boundary",
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        130,
+        131
+      ],
+      "seed": null,
+      "tile": 31,
+      "kind": "adversarial-boundary",
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        130,
+        131
+      ],
+      "seed": null,
+      "tile": 64,
+      "kind": "adversarial-boundary",
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        130,
+        131
+      ],
+      "seed": null,
+      "tile": 127,
+      "kind": "adversarial-boundary",
+      "passed": true
+    },
+    {
+      "case": "radius",
+      "shape": [
+        130,
+        131
+      ],
+      "seed": null,
+      "tile": 128,
+      "kind": "adversarial-boundary",
+      "passed": true
+    }
+  ]
+}

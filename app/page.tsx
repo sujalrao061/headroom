@@ -26,6 +26,12 @@ type AttentionResult = {
   recorded_at?: string; evidence_verified?: boolean;
 };
 type RecordedDecision = { status: "live"; model: string; strategy: string; agrees_with_validator: boolean; evidence_captured_at: string };
+type GauntletEvidence = {
+  captured_at_utc: string; scope: string; device: string; torch_version: string; python_version: string;
+  passed: boolean; checks_passed: number; checks_total: number;
+  parameters: { random_shapes: number; seeds_per_shape: number; tile_sizes: number[]; cases: string[] };
+  regression_sensitivity: { nearest_that_ignores_later_reference_tiles_detected: boolean; radius_that_excludes_exact_boundary_detected: boolean };
+};
 
 const workloads = [
   { id: "nearest", tag: "REPAIRABLE", title: "Nearest neighbor", summary: "Find one closest reference point per query.", contract: "One index per query", formula: "[N] indices" },
@@ -72,6 +78,7 @@ export default function Home() {
   const [attentionSource, setAttentionSource] = useState<"recorded" | "live">("recorded");
   const [attentionBusy, setAttentionBusy] = useState(false);
   const [attentionError, setAttentionError] = useState("");
+  const [gauntlet, setGauntlet] = useState<GauntletEvidence | null>(null);
   const selected = workloads.find(w => w.id === caseId)!;
   const baselineMemory = result?.baseline.peak_allocated_mb;
   const candidateMemory = result?.candidate.peak_allocated_mb;
@@ -100,6 +107,9 @@ export default function Home() {
       .catch(() => {});
     fetch("/api/attention-evidence", { cache: "no-store" }).then(response => response.ok ? response.json() : null)
       .then(data => { if (data) { setAttentionResult(data); setAttentionSource("recorded"); } })
+      .catch(() => {});
+    fetch("/api/contract-gauntlet", { cache: "no-store" }).then(response => response.ok ? response.json() : null)
+      .then(data => { if (data?.checks_total) setGauntlet(data); })
       .catch(() => {});
   }, []);
 
@@ -159,7 +169,7 @@ export default function Home() {
     <div className="ambient ambient-one"/><div className="ambient ambient-two"/>
     <header className="topbar shell">
       <div className="brand"><span className="brand-icon">H<span>.</span></span><span>HEADROOM</span></div>
-      <nav aria-label="Main navigation"><a href="#workbench">Workbench</a><a href="#attention">Attention</a><a href="#method">How it works</a></nav>
+      <nav aria-label="Main navigation"><a href="#workbench">Workbench</a><a href="#attention">Attention</a><a href="#gauntlet">Proof lab</a></nav>
       <div className="top-right"><span className="live-dot"/> GPU REPAIR LAB <span className="version">v0.1</span></div>
     </header>
 
@@ -215,7 +225,8 @@ export default function Home() {
       <div className="attention-panel"><div><span className="result-label">SINGLE-HEAD FLOAT32 ATTENTION</span><h3>Do not mistake low memory for the best repair.</h3><p>The hand-written tiled version can fit the budget while running much slower. Headroom measures the standard library before recommending either.</p>{attentionSupported ? <button className="run-button attention-run" onClick={runAttention} disabled={attentionBusy}><Play size={16} fill="currentColor"/>{attentionBusy ? "Measuring attention…" : "Run attention comparison"}<ArrowRight size={17}/></button> : <p className="attention-limit">Recorded local evidence is shown. Restart the updated GPU runner to enable a new run.</p>}{attentionError && <p className="error" role="alert">{attentionError}</p>}</div>
       {attentionResult && <div className="attention-outcome"><span className="result-label">{attentionSource === "recorded" ? "RECORDED LOCAL GPU RUN" : "NEW LOCAL GPU RUN"}</span><h3>Recommend {attentionResult.recommended === "pytorch_sdpa" ? "PyTorch SDPA" : attentionResult.recommended === "tiled_python" ? "Python tiling" : attentionResult.recommended === "keep_baseline" ? "keep the original" : "no verified option"}</h3><div className="metric"><span>Full matrix</span><b>{attentionResult.baseline.peak_allocated_mb ?? "—"} MiB · {attentionResult.baseline.latency_ms} ms</b></div><div className="metric"><span>Python tiling</span><b>{attentionResult.candidate.peak_allocated_mb ?? "—"} MiB · {attentionResult.candidate.latency_ms} ms</b></div><div className="metric"><span>PyTorch SDPA</span><b>{attentionResult.library.peak_allocated_mb ?? "—"} MiB · {attentionResult.library.latency_ms} ms</b></div><p>{attentionResult.checks.filter(c => c.passed && c.library_passed).length}/{attentionResult.checks.length} sampled output checks passed for both alternatives. {attentionResult.device}.</p><div className="model-state"><span className={attentionResult.nemotron.status === "live" ? "live-dot" : "off-dot"}/>{attentionResult.nemotron.status === "live" ? `${attentionSource === "recorded" ? "Recorded Nemotron decision" : "Nemotron"}: ${attentionResult.nemotron.strategy}; ${attentionResult.model_agrees ? "agrees with" : "differs from"} the measurement.` : attentionResult.nemotron.explanation}</div>{attentionSource === "recorded" && <p className="attention-limit">Saved local run · {attentionResult.recorded_at ? new Date(attentionResult.recorded_at).toLocaleString() : "date unavailable"} · {attentionResult.evidence_verified ? "Model decision verified against this GPU report" : "Model decision unverified"}</p>}<p className="attention-limit">{attentionResult.limitations}</p></div>}</div>
     </section>}
-    <section id="method" className="method shell"><div className="section-heading"><div><div className="kicker">04 / THE METHOD</div><h2>Nothing passes on a good story alone.</h2></div></div><div className="method-grid"><article><span>01</span><h3>Locate the allocation</h3><p>Connect a growing tensor shape to the line that materializes it.</p></article><article><span>02</span><h3>Bound the repair</h3><p>Use a small, reviewable strategy set. Model output is never executed as code.</p></article><article><span>03</span><h3>Challenge the output</h3><p>Independent cases check shape, values, ties, memory, and latency.</p></article><article><span>04</span><h3>Keep the evidence</h3><p>Download the settings, measurements, decision, and regression assertion.</p></article></div></section>
+    {gauntlet && <section id="gauntlet" className="gauntlet-section shell"><div className="section-heading"><div><div className="kicker">04 / CORRECTNESS GAUNTLET</div><h2>We tried to break the repair.</h2></div><p>Same output contracts, eight irregular shapes, three deterministic seeds, five tile sizes, and adversarial boundary inputs. This is a correctness stress run, not a speed claim.</p></div><div className="gauntlet-panel"><div className="gauntlet-score"><span className="result-label">RECORDED {gauntlet.device.includes("NVIDIA") ? "GPU" : "CPU"} VALIDATION</span><strong>{gauntlet.checks_passed}<small> / {gauntlet.checks_total}</small></strong><span className={gauntlet.passed ? "frontier-pass" : "frontier-fail"}>{gauntlet.passed ? "ALL CHECKS PASSED" : "FAILURES FOUND"}</span><p>{gauntlet.parameters.random_shapes} irregular shapes × {gauntlet.parameters.seeds_per_shape} seeds × {gauntlet.parameters.tile_sizes.length} tile sizes, plus cross-tile boundary cases for nearest and radius count.</p></div><div className="gauntlet-details"><div><span className={gauntlet.regression_sensitivity.nearest_that_ignores_later_reference_tiles_detected ? "pass-icon" : "fail-icon"}>{gauntlet.regression_sensitivity.nearest_that_ignores_later_reference_tiles_detected ? <Check size={14}/> : <X size={14}/>}</span><b>Injected bug caught</b><small>Ignoring later nearest-neighbor tiles</small></div><div><span className={gauntlet.regression_sensitivity.radius_that_excludes_exact_boundary_detected ? "pass-icon" : "fail-icon"}>{gauntlet.regression_sensitivity.radius_that_excludes_exact_boundary_detected ? <Check size={14}/> : <X size={14}/>}</span><b>Injected bug caught</b><small>Excluding points exactly at the radius</small></div><div className="gauntlet-meta">{gauntlet.device} · PyTorch {gauntlet.torch_version}<br/>Captured {new Date(gauntlet.captured_at_utc).toLocaleDateString()}</div><a className="download gauntlet-download" href="https://github.com/sujalrao061/headroom/blob/main/evidence/contract-gauntlet.json" target="_blank" rel="noreferrer"><Download size={16}/> Inspect every trial</a></div></div><p className="results-caveat">Finite reproducible checks increase confidence but cannot prove correctness for every possible tensor. The full trial report and command to regenerate it are in the open repository.</p></section>}
+    <section id="method" className="method shell"><div className="section-heading"><div><div className="kicker">05 / THE METHOD</div><h2>Nothing passes on a good story alone.</h2></div></div><div className="method-grid"><article><span>01</span><h3>Locate the allocation</h3><p>Connect a growing tensor shape to the line that materializes it.</p></article><article><span>02</span><h3>Bound the repair</h3><p>Use a small, reviewable strategy set. Model output is never executed as code.</p></article><article><span>03</span><h3>Challenge the output</h3><p>Independent cases check shape, values, ties, memory, and latency.</p></article><article><span>04</span><h3>Keep the evidence</h3><p>Download the settings, measurements, decision, and regression assertion.</p></article></div></section>
     <footer className="footer shell"><div className="brand"><span className="brand-icon">H<span>.</span></span><span>HEADROOM</span></div><p>Build on evidence. Leave room to grow.</p><div className="footer-links"><a href="https://github.com/sujalrao061/headroom" target="_blank" rel="noreferrer">Source code ↗</a><a href="#workbench">Back to top ↑</a></div></footer>
   </main>;
 }
