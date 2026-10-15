@@ -48,8 +48,8 @@ The [live attention decision](evidence/attention-decision-live.json) shows that 
 - [x] Configure a private runner key and verify live Nemotron responses without saving the key.
 - [x] Prepare a recorded-evidence website that works when the local runner is offline and labels saved measurements clearly.
 - [x] Implement a server-side Token Factory runtime decision about fixed saved GPU evidence, without exposing the key to the browser.
-- [ ] Publish the MIT-licensed repository and add its URL here.
-- [ ] Deploy the web frontend and verify the guest experience from an unauthenticated browser. See [DEPLOY.md](DEPLOY.md).
+- [x] Publish the MIT-licensed repository and add its URL here.
+- [x] Deploy the web frontend and verify the public saved-evidence flow. See [DEPLOY.md](DEPLOY.md).
 - [ ] Configure the server-side Nebius key and verify the hosted “Ask Nemotron now” action produces a live Token Factory response. A recorded-only public website is not sufficient by itself under the official rules.
 - [ ] Record and publish a public YouTube video under three minutes; add the URL here.
 - [ ] Enter the project description, track, working demo URL, repository URL, video URL, and honest Nebius/NVIDIA feedback on Devpost.
