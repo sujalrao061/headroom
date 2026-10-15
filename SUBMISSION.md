@@ -63,6 +63,6 @@ The [live attention decision](evidence/attention-decision-live.json) shows that 
 
 **Public demo URL:** pending
 
-**Public repository URL:** pending
+**Public repository URL:** https://github.com/sujalrao061/headroom
 
 **Public video URL:** pending
