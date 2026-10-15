@@ -73,10 +73,30 @@ export default function Home() {
   const [attentionBusy, setAttentionBusy] = useState(false);
   const [attentionError, setAttentionError] = useState("");
   const selected = workloads.find(w => w.id === caseId)!;
+  const baselineMemory = result?.baseline.peak_allocated_mb;
+  const candidateMemory = result?.candidate.peak_allocated_mb;
+  const memoryReduction = baselineMemory && candidateMemory !== null && candidateMemory !== undefined && baselineMemory > candidateMemory
+    ? Math.round((1 - candidateMemory / baselineMemory) * 100)
+    : null;
+  const slowdown = result && result.baseline.latency_ms > 0 && result.candidate.latency_ms > result.baseline.latency_ms
+    ? (result.candidate.latency_ms / result.baseline.latency_ms).toFixed(1)
+    : null;
 
   useEffect(() => {
     fetch("/api/health", { cache: "no-store" }).then(response => response.json())
-      .then(data => { if (Array.isArray(data.supported_cases)) setSupportedCases(data.supported_cases); setAttentionSupported(data.attention_supported === true); setRunnerOnline(data.runner_online === true); })
+      .then(data => {
+        if (Array.isArray(data.supported_cases)) setSupportedCases(data.supported_cases);
+        setAttentionSupported(data.attention_supported === true);
+        setRunnerOnline(data.runner_online === true);
+        // On the hosted site, lead with proof from the saved local GPU run.
+        // A fresh-run button remains available when the local runner is online.
+        if (data.runner_online !== true) {
+          fetch("/api/recorded-run?case_id=nearest", { cache: "no-store" })
+            .then(response => response.ok ? response.json() : null)
+            .then(saved => { if (saved) { setResult(saved); setResultSource("recorded"); } })
+            .catch(() => {});
+        }
+      })
       .catch(() => {});
     fetch("/api/attention-evidence", { cache: "no-store" }).then(response => response.ok ? response.json() : null)
       .then(data => { if (data) { setAttentionResult(data); setAttentionSource("recorded"); } })
@@ -147,7 +167,7 @@ export default function Home() {
       <div className="eyebrow"><span className="eyebrow-line"/> BUILT FOR THE MOMENT YOUR GPU SAYS NO</div>
       <h1>Make it fit.<br/><em>Prove it works.</em></h1>
       <p>Headroom finds the memory bottleneck, proposes a bounded repair, and tests whether the outputs you actually need still survive.</p>
-      <a className="hero-link" href="#workbench">Open the workbench <ArrowDownRight size={19}/></a>
+      <div className="hero-actions"><a className="hero-link" href="#workbench">Open the workbench <ArrowDownRight size={19}/></a><a className="hero-source" href="https://github.com/sujalrao061/headroom" target="_blank" rel="noreferrer">Browse the open source code ↗</a></div>
       <div className="hero-mark" aria-hidden="true"><span>H</span><i/></div>
     </section>
 
@@ -174,7 +194,7 @@ export default function Home() {
         <div className="panel evidence-panel" id="evidence">
           <div className="panel-heading"><span className="panel-step">02</span><div><h3>Trace the pressure</h3><p>Source-linked evidence, then an independent decision.</p></div><span className="panel-state">{result ? resultSource === "recorded" ? "SAVED GPU RUN" : "NEW GPU RUN" : "AWAITING RUN"}</span></div>
           <div className="code-window"><div className="code-head"><span><i/><i/><i/></span><b>{selected.id === "nearest" ? "nearest.py" : selected.id === "radius" ? "radius_count.py" : "matrix.py"}</b><span>PYTORCH</span></div><pre>{(result?.source ?? `def ${selected.id === "nearest" ? "nearest" : selected.id === "radius" ? "radius_count" : "matrix"}(query, reference):\n    delta = query[:, None, :] - reference[None, :, :]\n    distance = torch.sqrt(torch.sum(delta * delta, dim=-1))\n    return ${selected.id === "nearest" ? "torch.argmin(distance, dim=1)" : selected.id === "radius" ? "torch.sum(distance <= 1.0, dim=1)" : "distance"}`).split("\n").map((line, i) => <span key={i} className={i === 1 ? "hot-line" : ""}><b>{String(i + 1).padStart(2, "0")}</b>{line}</span>)}</pre><div className="code-foot"><span className="pulse"/> FULL PAIRWISE ALLOCATION <span>·</span> O(N × M) MEMORY</div></div>
-          <div className="memory-card"><div className="mini-title"><span>MEMORY PROFILE</span><span>{result ? "MEASURED PEAK ADDITIONAL ALLOCATION" : "RUN TO MEASURE"}</span></div>{result ? <div className="bars"><div><label>Baseline <b>{result.baseline.peak_allocated_mb ?? "—"} MB</b></label><div className="bar-track"><i style={{width: `${Math.max(2, Math.min(100, ((result.baseline.peak_allocated_mb ?? 0) / Math.max(result.baseline.peak_allocated_mb ?? 1, result.candidate.peak_allocated_mb ?? 1))*100))}%`}}/></div></div><div><label>Candidate <b>{result.candidate.peak_allocated_mb ?? "—"} MB</b></label><div className="bar-track"><i className="candidate-bar" style={{width: `${Math.max(2, Math.min(100, ((result.candidate.peak_allocated_mb ?? 0) / Math.max(result.baseline.peak_allocated_mb ?? 1, result.candidate.peak_allocated_mb ?? 1))*100))}%`}}/></div></div></div> : <div className="empty-chart"><span/><span/><span/><span/><span/><span/><span/><span/><span/><span/><span/><span/><span/><span/><span/><span/><span/><span/><span/><span/><span/><span/></div>}</div>
+          <div className="memory-card"><div className="mini-title"><span>MEMORY PROFILE</span><span>{result ? "MEASURED PEAK ADDITIONAL ALLOCATION" : "RUN TO MEASURE"}</span></div>{result ? <div className="bars"><div><label>Baseline <b>{result.baseline.peak_allocated_mb ?? "—"} MB</b></label><div className="bar-track"><i style={{width: `${Math.max(2, Math.min(100, ((result.baseline.peak_allocated_mb ?? 0) / Math.max(result.baseline.peak_allocated_mb ?? 1, result.candidate.peak_allocated_mb ?? 1))*100))}%`}}/></div></div><div><label>Candidate <b>{result.candidate.peak_allocated_mb ?? "—"} MB</b></label><div className="bar-track"><i className="candidate-bar" style={{width: `${Math.max(2, Math.min(100, ((result.candidate.peak_allocated_mb ?? 0) / Math.max(result.baseline.peak_allocated_mb ?? 1, result.candidate.peak_allocated_mb ?? 1))*100))}%`}}/></div></div></div> : <div className="empty-chart"><span/><span/><span/><span/><span/><span/><span/><span/><span/><span/><span/><span/><span/><span/><span/><span/><span/><span/><span/><span/><span/><span/></div>}{memoryReduction !== null && result?.device.includes("NVIDIA") && <p className="memory-summary">{memoryReduction}% less peak additional allocation{slowdown ? ` · ${slowdown}× slower than baseline` : ""}. The validator checks whether this tradeoff fits the stated limits.</p>}</div>
           {result ? <div className={`decision ${result.accepted ? "accept" : "reject"}`}><div className="decision-icon">{result.accepted ? <Check size={22}/> : <X size={22}/>}</div><div><span>INDEPENDENT VALIDATOR</span><h3>{result.accepted ? "Candidate accepted" : "Candidate rejected"}</h3><p>{result.reasons[0]}</p></div></div> : <div className="awaiting"><div className="awaiting-icon">◎</div><span>Your measured result will appear here.</span></div>}
         </div>
       </div>
@@ -196,6 +216,6 @@ export default function Home() {
       {attentionResult && <div className="attention-outcome"><span className="result-label">{attentionSource === "recorded" ? "RECORDED LOCAL GPU RUN" : "NEW LOCAL GPU RUN"}</span><h3>Recommend {attentionResult.recommended === "pytorch_sdpa" ? "PyTorch SDPA" : attentionResult.recommended === "tiled_python" ? "Python tiling" : attentionResult.recommended === "keep_baseline" ? "keep the original" : "no verified option"}</h3><div className="metric"><span>Full matrix</span><b>{attentionResult.baseline.peak_allocated_mb ?? "—"} MiB · {attentionResult.baseline.latency_ms} ms</b></div><div className="metric"><span>Python tiling</span><b>{attentionResult.candidate.peak_allocated_mb ?? "—"} MiB · {attentionResult.candidate.latency_ms} ms</b></div><div className="metric"><span>PyTorch SDPA</span><b>{attentionResult.library.peak_allocated_mb ?? "—"} MiB · {attentionResult.library.latency_ms} ms</b></div><p>{attentionResult.checks.filter(c => c.passed && c.library_passed).length}/{attentionResult.checks.length} sampled output checks passed for both alternatives. {attentionResult.device}.</p><div className="model-state"><span className={attentionResult.nemotron.status === "live" ? "live-dot" : "off-dot"}/>{attentionResult.nemotron.status === "live" ? `${attentionSource === "recorded" ? "Recorded Nemotron decision" : "Nemotron"}: ${attentionResult.nemotron.strategy}; ${attentionResult.model_agrees ? "agrees with" : "differs from"} the measurement.` : attentionResult.nemotron.explanation}</div>{attentionSource === "recorded" && <p className="attention-limit">Saved local run · {attentionResult.recorded_at ? new Date(attentionResult.recorded_at).toLocaleString() : "date unavailable"} · {attentionResult.evidence_verified ? "Model decision verified against this GPU report" : "Model decision unverified"}</p>}<p className="attention-limit">{attentionResult.limitations}</p></div>}</div>
     </section>}
     <section id="method" className="method shell"><div className="section-heading"><div><div className="kicker">04 / THE METHOD</div><h2>Nothing passes on a good story alone.</h2></div></div><div className="method-grid"><article><span>01</span><h3>Locate the allocation</h3><p>Connect a growing tensor shape to the line that materializes it.</p></article><article><span>02</span><h3>Bound the repair</h3><p>Use a small, reviewable strategy set. Model output is never executed as code.</p></article><article><span>03</span><h3>Challenge the output</h3><p>Independent cases check shape, values, ties, memory, and latency.</p></article><article><span>04</span><h3>Keep the evidence</h3><p>Download the settings, measurements, decision, and regression assertion.</p></article></div></section>
-    <footer className="footer shell"><div className="brand"><span className="brand-icon">H<span>.</span></span><span>HEADROOM</span></div><p>Build on evidence. Leave room to grow.</p><a href="#workbench">Back to top ↑</a></footer>
+    <footer className="footer shell"><div className="brand"><span className="brand-icon">H<span>.</span></span><span>HEADROOM</span></div><p>Build on evidence. Leave room to grow.</p><div className="footer-links"><a href="https://github.com/sujalrao061/headroom" target="_blank" rel="noreferrer">Source code ↗</a><a href="#workbench">Back to top ↑</a></div></footer>
   </main>;
 }
