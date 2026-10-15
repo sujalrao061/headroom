@@ -1,0 +1,31 @@
+{
+  "captured_at_utc": "2026-10-14T03:41:22.587703+00:00",
+  "scope": "Three known built-in workloads; exploratory strategy-selection comparison, not unfamiliar-workload generalization",
+  "live_model_requested": false,
+  "rows": [
+    {
+      "case_id": "nearest",
+      "expected_strategy": "tile_nearest",
+      "rule": {
+        "strategy": "tile_nearest",
+        "correct": true
+      }
+    },
+    {
+      "case_id": "matrix",
+      "expected_strategy": "no_repair",
+      "rule": {
+        "strategy": "no_repair",
+        "correct": true
+      }
+    },
+    {
+      "case_id": "radius",
+      "expected_strategy": "tile_radius_count",
+      "rule": {
+        "strategy": "tile_radius_count",
+        "correct": true
+      }
+    }
+  ]
+}

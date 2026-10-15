@@ -1,0 +1,9 @@
+{
+  "captured_at_utc": "2026-10-14T15:09:37.984549+00:00",
+  "source_sha256": "7743bd55f5300e69a772cbe5a19e4a9f4231d2bba8479daa448fb42c6afb0266",
+  "scope": "One saved local attention measurement; strategy selection only, not a new GPU run",
+  "independent_choice": "pytorch_sdpa",
+  "live_model_requested": false,
+  "model": null,
+  "model_agrees": null
+}

@@ -1,0 +1,19 @@
+{
+  "protocol": "Hand-authored contract variants frozen before any live model run. This evaluates strategy selection only; it does not prove GPU correctness or generalization to arbitrary code.",
+  "shared_source": "def workload(query, reference):\n    delta = query[:, None, :] - reference[None, :, :]\n    distance = torch.sqrt(torch.sum(delta * delta, dim=-1))\n    return postprocess(distance)",
+  "size": 1024,
+  "cases": [
+    {"id": "H01", "contract": "For each query, return the zero-based position of its closest reference point; ties choose the first position.", "expected_strategy": "tile_nearest"},
+    {"id": "H02", "contract": "The result is an integer vector giving argmin over reference distances for every query row.", "expected_strategy": "tile_nearest"},
+    {"id": "H03", "contract": "Return one nearest-reference index for each query, with the earliest index on equal distances.", "expected_strategy": "tile_nearest"},
+    {"id": "H04", "contract": "Find the closest reference point for each query and return its index, not its distance.", "expected_strategy": "tile_nearest"},
+    {"id": "H05", "contract": "For every query, report how many reference points are at Euclidean distance at most 1.0, including the boundary.", "expected_strategy": "tile_radius_count"},
+    {"id": "H06", "contract": "Output an integer tally per query of references inside or on the radius-1.0 ball.", "expected_strategy": "tile_radius_count"},
+    {"id": "H07", "contract": "Count neighbors per query whose distance is less than or equal to one.", "expected_strategy": "tile_radius_count"},
+    {"id": "H08", "contract": "Return one count per query: the number of references within radius 1.0.", "expected_strategy": "tile_radius_count"},
+    {"id": "H09", "contract": "Return the complete N-by-M array of Euclidean distances, with one value for each query-reference pair.", "expected_strategy": "no_repair"},
+    {"id": "H10", "contract": "For each query return its two closest reference indices in sorted distance order.", "expected_strategy": "no_repair"},
+    {"id": "H11", "contract": "Return the nearest distance value for every query rather than the index of the nearest point.", "expected_strategy": "no_repair"},
+    {"id": "H12", "contract": "For every query indicate whether at least one reference is closer than 1.0; output Booleans, not counts.", "expected_strategy": "no_repair"}
+  ]
+}

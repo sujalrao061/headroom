@@ -1,0 +1,33 @@
+{
+  "captured_at_utc": "2026-10-14T15:13:53.261472+00:00",
+  "source_sha256": "7743bd55f5300e69a772cbe5a19e4a9f4231d2bba8479daa448fb42c6afb0266",
+  "scope": "One saved local attention measurement; strategy selection only, not a new GPU run",
+  "independent_choice": "pytorch_sdpa",
+  "live_model_requested": true,
+  "model": {
+    "status": "live",
+    "strategy": "pytorch_sdpa",
+    "model_id": "nvidia/nemotron-3-super-120b-a12b",
+    "usage": {
+      "completion_tokens": 284,
+      "prompt_tokens": 599,
+      "total_tokens": 883,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": null,
+        "audio_tokens": null,
+        "reasoning_tokens": 192,
+        "rejected_prediction_tokens": null
+      },
+      "prompt_tokens_details": {
+        "audio_tokens": null,
+        "cached_tokens": 0,
+        "created_cache_tokens": 0,
+        "multimodal_tokens": null
+      },
+      "prompt_cache_hit_tokens": 0,
+      "prompt_cache_miss_tokens": 599
+    },
+    "error": null
+  },
+  "model_agrees": true
+}

@@ -1,0 +1,12 @@
+node_modules/
+.vercel/
+.next/
+.next-build/
+__pycache__/
+*.pyc
+.env*
+!.env.example
+reports/
+.python-deps/
+.torch-deps/
+*.tsbuildinfo

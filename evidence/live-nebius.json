@@ -1,0 +1,255 @@
+{
+  "captured_at_utc": "2026-10-14T03:24:59.8357018Z",
+  "scope": "Local GPU validation with live Token Factory attempt; nearest returned malformed model output, matrix returned a live response. No API key or personal data.",
+  "nearest": {
+    "case_id": "nearest",
+    "name": "Nearest neighbor",
+    "contract": "One reference index per query point",
+    "source": "def nearest(query, reference):\n    delta = query[:, None, :] - reference[None, :, :]\n    distance = torch.sqrt(torch.sum(delta * delta, dim=-1))\n    return torch.argmin(distance, dim=1)",
+    "hot_line": 2,
+    "size": 1536,
+    "memory_limit_mb": 8,
+    "latency_limit_ms": 1000,
+    "device": "NVIDIA GeForce RTX 3050 Ti Laptop GPU",
+    "torch_version": "2.7.1+cu118",
+    "cuda_version": "11.8",
+    "python_version": "3.12.14",
+    "baseline": {
+      "latency_ms": 22.269,
+      "peak_allocated_mb": 65.012,
+      "peak_total_allocated_mb": 73.172,
+      "base_allocated_mb": 8.16,
+      "peak_reserved_mb": 78.0
+    },
+    "candidate": {
+      "latency_ms": 32.006,
+      "peak_allocated_mb": 0.463,
+      "peak_total_allocated_mb": 8.624,
+      "base_allocated_mb": 8.16,
+      "peak_reserved_mb": 22.0
+    },
+    "library": {
+      "latency_ms": 15.034,
+      "peak_allocated_mb": 9.07,
+      "peak_total_allocated_mb": 17.23,
+      "base_allocated_mb": 8.16,
+      "peak_reserved_mb": 22.0,
+      "contract_passed": true,
+      "within_limits": false
+    },
+    "checks": [
+      {
+        "shape": "7×11",
+        "passed": true,
+        "expected_shape": [
+          7
+        ],
+        "actual_shape": [
+          7
+        ]
+      },
+      {
+        "shape": "33×19",
+        "passed": true,
+        "expected_shape": [
+          33
+        ],
+        "actual_shape": [
+          33
+        ]
+      },
+      {
+        "shape": "129×131",
+        "passed": true,
+        "expected_shape": [
+          129
+        ],
+        "actual_shape": [
+          129
+        ]
+      },
+      {
+        "shape": "tie case",
+        "passed": true,
+        "expected_shape": [
+          1
+        ],
+        "actual_shape": [
+          1
+        ]
+      }
+    ],
+    "frontier": {
+      "tested": [
+        {
+          "size": 256,
+          "latency_ms": 1.002,
+          "peak_allocated_mb": 0.444,
+          "within_limits": true
+        },
+        {
+          "size": 512,
+          "latency_ms": 3.596,
+          "peak_allocated_mb": 0.448,
+          "within_limits": true
+        },
+        {
+          "size": 1024,
+          "latency_ms": 13.963,
+          "peak_allocated_mb": 0.456,
+          "within_limits": true
+        },
+        {
+          "size": 1536,
+          "latency_ms": 32.006,
+          "peak_allocated_mb": 0.463,
+          "within_limits": true
+        }
+      ],
+      "largest_tested_within_limits": 1536,
+      "untested_sizes": "unknown"
+    },
+    "accepted": true,
+    "reasons": [
+      "All sampled output, GPU memory, and latency checks passed. Untested inputs remain unknown."
+    ],
+    "repetitions": 3,
+    "warmups": 1,
+    "failure_kind": "application memory budget",
+    "patch": "Replace full pairwise allocation with two-axis tiled nearest-neighbor reduction; preserve first-index tie behavior.",
+    "patch_diff": "--- a/workload.py\n+++ b/workload.py\n@@\n-    delta = query[:, None, :] - reference[None, :, :]\n-    distance = torch.sqrt(torch.sum(delta * delta, dim=-1))\n-    return torch.argmin(distance, dim=1)\n+    rows = []\n+    for q0 in range(0, len(query), 128):\n+        q = query[q0:q0 + 128]\n+        best_distance = torch.full((len(q),), float('inf'), device=q.device, dtype=q.dtype)\n+        best_index = torch.zeros((len(q),), device=q.device, dtype=torch.long)\n+        for r0 in range(0, len(reference), 128):\n+            r = reference[r0:r0 + 128]\n+            distance = torch.sqrt(torch.sum((q[:, None, :] - r[None, :, :]) ** 2, dim=-1))\n+            local_distance, local_index = torch.min(distance, dim=1)\n+            improve = local_distance < best_distance\n+            best_distance = torch.where(improve, local_distance, best_distance)\n+            best_index = torch.where(improve, local_index + r0, best_index)\n+        rows.append(best_index)\n+    return torch.cat(rows)\n",
+    "regression_test": "assert torch.equal(nearest_baseline(q, r), tiled_nearest(q, r))",
+    "regression_test_source": "import torch\nfrom headroom.workloads import nearest_baseline, tiled_nearest\n\nfor n, m, seed in [(7, 11, 1), (33, 19, 2), (129, 131, 3)]:\n    torch.manual_seed(seed)\n    q, r = torch.randn(n, 3), torch.randn(m, 3)\n    assert torch.equal(nearest_baseline(q, r), tiled_nearest(q, r))\n\nq = torch.tensor([[0., 0., 0.]])\nr = torch.tensor([[1., 0., 0.], [-1., 0., 0.]])\nassert torch.equal(nearest_baseline(q, r), tiled_nearest(q, r, tile=1))\n",
+    "method": "fixed built-in workload; no arbitrary code execution",
+    "nemotron": {
+      "status": "error",
+      "model": "nvidia/nemotron-3-super-120b-a12b",
+      "strategy": "tile_nearest",
+      "explanation": "Nemotron request failed (JSONDecodeError); local fixed candidate shown separately."
+    },
+    "candidate_origin": "fixed local candidate"
+  },
+  "matrix": {
+    "case_id": "matrix",
+    "name": "Full distance matrix",
+    "contract": "Every pairwise distance, shape [N, M]",
+    "source": "def matrix(query, reference):\n    delta = query[:, None, :] - reference[None, :, :]\n    distance = torch.sqrt(torch.sum(delta * delta, dim=-1))\n    return distance",
+    "hot_line": 2,
+    "size": 1536,
+    "memory_limit_mb": 8,
+    "latency_limit_ms": 1000,
+    "device": "NVIDIA GeForce RTX 3050 Ti Laptop GPU",
+    "torch_version": "2.7.1+cu118",
+    "cuda_version": "11.8",
+    "python_version": "3.12.14",
+    "baseline": {
+      "latency_ms": 1.509,
+      "peak_allocated_mb": 74.0,
+      "peak_total_allocated_mb": 82.16,
+      "base_allocated_mb": 8.16,
+      "peak_reserved_mb": 106.0
+    },
+    "candidate": {
+      "latency_ms": 46.474,
+      "peak_allocated_mb": 0.463,
+      "peak_total_allocated_mb": 8.624,
+      "base_allocated_mb": 8.16,
+      "peak_reserved_mb": 22.0
+    },
+    "library": {
+      "latency_ms": 0.823,
+      "peak_allocated_mb": 18.059,
+      "peak_total_allocated_mb": 26.219,
+      "base_allocated_mb": 8.16,
+      "peak_reserved_mb": 42.0,
+      "contract_passed": false,
+      "within_limits": false
+    },
+    "checks": [
+      {
+        "shape": "7×11",
+        "passed": false,
+        "expected_shape": [
+          7,
+          11
+        ],
+        "actual_shape": [
+          7
+        ]
+      },
+      {
+        "shape": "33×19",
+        "passed": false,
+        "expected_shape": [
+          33,
+          19
+        ],
+        "actual_shape": [
+          33
+        ]
+      },
+      {
+        "shape": "129×131",
+        "passed": false,
+        "expected_shape": [
+          129,
+          131
+        ],
+        "actual_shape": [
+          129
+        ]
+      },
+      {
+        "shape": "tie case",
+        "passed": false,
+        "expected_shape": [
+          1,
+          2
+        ],
+        "actual_shape": [
+          1
+        ]
+      }
+    ],
+    "frontier": null,
+    "accepted": false,
+    "reasons": [
+      "Nemotron did not propose the bounded tiled strategy; the measured candidate remains a counterfactual test, not an accepted model repair.",
+      "Output contract failed: the tiled candidate returns indices, but this workload requires the full matrix."
+    ],
+    "repetitions": 3,
+    "warmups": 1,
+    "failure_kind": "application memory budget",
+    "patch": "Replace full pairwise allocation with two-axis tiled nearest-neighbor reduction; preserve first-index tie behavior.",
+    "patch_diff": "The same nearest-index patch was evaluated but rejected: it removes required matrix values.",
+    "regression_test": "assert torch.equal(nearest_baseline(q, r), tiled_nearest(q, r))",
+    "regression_test_source": "import torch\nfrom headroom.workloads import matrix_baseline, tiled_nearest\n\nq, r = torch.randn(7, 3), torch.randn(11, 3)\nassert matrix_baseline(q, r).shape == (7, 11)\nassert tiled_nearest(q, r).shape == (7,)\n",
+    "method": "fixed built-in workload; no arbitrary code execution",
+    "nemotron": {
+      "status": "live",
+      "model": "nvidia/nemotron-3-super-120b-a12b",
+      "strategy": "no_repair",
+      "explanation": "The contract demands an N×M matrix of all pairwise distances, not a single nearest index per query. Using tile_nearest would produce incorrect output shape and thus violate the contract.",
+      "usage": {
+        "completion_tokens": 234,
+        "prompt_tokens": 594,
+        "total_tokens": 828,
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": null,
+          "audio_tokens": null,
+          "reasoning_tokens": 177,
+          "rejected_prediction_tokens": null
+        },
+        "prompt_tokens_details": {
+          "audio_tokens": null,
+          "cached_tokens": 0,
+          "created_cache_tokens": 0,
+          "multimodal_tokens": null
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 594
+      }
+    },
+    "candidate_origin": "fixed local candidate"
+  }
+}

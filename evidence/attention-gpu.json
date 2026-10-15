@@ -1,0 +1,74 @@
+{
+  "captured_at_utc": "2026-10-14T15:09:37.116604+00:00",
+  "scope": "Independent single-head float32 attention workload; no Nebius call or arbitrary code execution",
+  "device": "NVIDIA GeForce RTX 3050 Ti Laptop GPU",
+  "torch_version": "2.7.1+cu118",
+  "cuda_version": "11.8",
+  "shape": {
+    "sequence_length": 1536,
+    "head_dimension": 64
+  },
+  "memory_budget_mib": 8,
+  "checks": [
+    {
+      "shape": [
+        7,
+        11,
+        8
+      ],
+      "max_absolute_error": 1.8e-07,
+      "passed": true,
+      "library_max_absolute_error": 3e-07,
+      "library_passed": true
+    },
+    {
+      "shape": [
+        65,
+        129,
+        16
+      ],
+      "max_absolute_error": 3.3e-07,
+      "passed": true,
+      "library_max_absolute_error": 3.3e-07,
+      "library_passed": true
+    },
+    {
+      "shape": [
+        131,
+        257,
+        32
+      ],
+      "max_absolute_error": 1.5e-07,
+      "passed": true,
+      "library_max_absolute_error": 1.8e-07,
+      "library_passed": true
+    }
+  ],
+  "baseline": {
+    "latency_ms": 0.489,
+    "peak_allocated_mb": 18.75,
+    "peak_total_allocated_mb": 28.0,
+    "base_allocated_mb": 9.25,
+    "peak_reserved_mb": 42.0
+  },
+  "candidate": {
+    "latency_ms": 91.221,
+    "peak_allocated_mb": 1.205,
+    "peak_total_allocated_mb": 10.455,
+    "base_allocated_mb": 9.25,
+    "peak_reserved_mb": 44.0
+  },
+  "library": {
+    "latency_ms": 0.55,
+    "peak_allocated_mb": 0.75,
+    "peak_total_allocated_mb": 10.0,
+    "base_allocated_mb": 9.25,
+    "peak_reserved_mb": 44.0
+  },
+  "baseline_within_budget": false,
+  "candidate_within_budget": true,
+  "library_within_budget": true,
+  "recommended": "pytorch_sdpa",
+  "selection_policy": "Among validated implementations within the 8 MiB additional-allocation budget, select the lowest measured median latency. No model chose this result.",
+  "limitations": "Three finite CPU contract checks and local GPU measurements; no masks, dropout, gradients, mixed precision, or production kernel comparison."
+}

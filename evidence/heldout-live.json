@@ -1,0 +1,401 @@
+{
+  "captured_at_utc": "2026-10-14T03:46:18.060081+00:00",
+  "protocol": "Hand-authored contract variants frozen before any live model run. This evaluates strategy selection only; it does not prove GPU correctness or generalization to arbitrary code.",
+  "live_model_requested": true,
+  "total_cases": 12,
+  "rule_correct": 5,
+  "model_correct": 11,
+  "model_completed": 11,
+  "rows": [
+    {
+      "id": "H01",
+      "expected_strategy": "tile_nearest",
+      "rule": {
+        "strategy": "no_repair",
+        "correct": false
+      },
+      "nemotron": {
+        "status": "live",
+        "strategy": "tile_nearest",
+        "correct": true,
+        "latency_ms": 1767.9,
+        "model": "nvidia/nemotron-3-super-120b-a12b",
+        "usage": {
+          "completion_tokens": 275,
+          "prompt_tokens": 218,
+          "total_tokens": 493,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": null,
+            "audio_tokens": null,
+            "reasoning_tokens": 186,
+            "rejected_prediction_tokens": null
+          },
+          "prompt_tokens_details": {
+            "audio_tokens": null,
+            "cached_tokens": 0,
+            "created_cache_tokens": 0,
+            "multimodal_tokens": null
+          },
+          "prompt_cache_hit_tokens": 0,
+          "prompt_cache_miss_tokens": 218
+        }
+      }
+    },
+    {
+      "id": "H02",
+      "expected_strategy": "tile_nearest",
+      "rule": {
+        "strategy": "no_repair",
+        "correct": false
+      },
+      "nemotron": {
+        "status": "live",
+        "strategy": "tile_nearest",
+        "correct": true,
+        "latency_ms": 1765.5,
+        "model": "nvidia/nemotron-3-super-120b-a12b",
+        "usage": {
+          "completion_tokens": 300,
+          "prompt_tokens": 214,
+          "total_tokens": 514,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": null,
+            "audio_tokens": null,
+            "reasoning_tokens": 214,
+            "rejected_prediction_tokens": null
+          },
+          "prompt_tokens_details": {
+            "audio_tokens": null,
+            "cached_tokens": 0,
+            "created_cache_tokens": 0,
+            "multimodal_tokens": null
+          },
+          "prompt_cache_hit_tokens": 0,
+          "prompt_cache_miss_tokens": 214
+        }
+      }
+    },
+    {
+      "id": "H03",
+      "expected_strategy": "tile_nearest",
+      "rule": {
+        "strategy": "no_repair",
+        "correct": false
+      },
+      "nemotron": {
+        "status": "live",
+        "strategy": "tile_nearest",
+        "correct": true,
+        "latency_ms": 830.6,
+        "model": "nvidia/nemotron-3-super-120b-a12b",
+        "usage": {
+          "completion_tokens": 118,
+          "prompt_tokens": 214,
+          "total_tokens": 332,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": null,
+            "audio_tokens": null,
+            "reasoning_tokens": 42,
+            "rejected_prediction_tokens": null
+          },
+          "prompt_tokens_details": {
+            "audio_tokens": null,
+            "cached_tokens": 0,
+            "created_cache_tokens": 0,
+            "multimodal_tokens": null
+          },
+          "prompt_cache_hit_tokens": 0,
+          "prompt_cache_miss_tokens": 214
+        }
+      }
+    },
+    {
+      "id": "H04",
+      "expected_strategy": "tile_nearest",
+      "rule": {
+        "strategy": "no_repair",
+        "correct": false
+      },
+      "nemotron": {
+        "status": "live",
+        "strategy": "tile_nearest",
+        "correct": true,
+        "latency_ms": 1391.3,
+        "model": "nvidia/nemotron-3-super-120b-a12b",
+        "usage": {
+          "completion_tokens": 228,
+          "prompt_tokens": 214,
+          "total_tokens": 442,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": null,
+            "audio_tokens": null,
+            "reasoning_tokens": 159,
+            "rejected_prediction_tokens": null
+          },
+          "prompt_tokens_details": {
+            "audio_tokens": null,
+            "cached_tokens": 0,
+            "created_cache_tokens": 0,
+            "multimodal_tokens": null
+          },
+          "prompt_cache_hit_tokens": 0,
+          "prompt_cache_miss_tokens": 214
+        }
+      }
+    },
+    {
+      "id": "H05",
+      "expected_strategy": "tile_radius_count",
+      "rule": {
+        "strategy": "no_repair",
+        "correct": false
+      },
+      "nemotron": {
+        "status": "live",
+        "strategy": "tile_radius_count",
+        "correct": true,
+        "latency_ms": 1023.5,
+        "model": "nvidia/nemotron-3-super-120b-a12b",
+        "usage": {
+          "completion_tokens": 164,
+          "prompt_tokens": 221,
+          "total_tokens": 385,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": null,
+            "audio_tokens": null,
+            "reasoning_tokens": 70,
+            "rejected_prediction_tokens": null
+          },
+          "prompt_tokens_details": {
+            "audio_tokens": null,
+            "cached_tokens": 0,
+            "created_cache_tokens": 0,
+            "multimodal_tokens": null
+          },
+          "prompt_cache_hit_tokens": 0,
+          "prompt_cache_miss_tokens": 221
+        }
+      }
+    },
+    {
+      "id": "H06",
+      "expected_strategy": "tile_radius_count",
+      "rule": {
+        "strategy": "no_repair",
+        "correct": false
+      },
+      "nemotron": {
+        "status": "live",
+        "strategy": "tile_radius_count",
+        "correct": true,
+        "latency_ms": 1656.0,
+        "model": "nvidia/nemotron-3-super-120b-a12b",
+        "usage": {
+          "completion_tokens": 293,
+          "prompt_tokens": 216,
+          "total_tokens": 509,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": null,
+            "audio_tokens": null,
+            "reasoning_tokens": 167,
+            "rejected_prediction_tokens": null
+          },
+          "prompt_tokens_details": {
+            "audio_tokens": null,
+            "cached_tokens": 0,
+            "created_cache_tokens": 0,
+            "multimodal_tokens": null
+          },
+          "prompt_cache_hit_tokens": 0,
+          "prompt_cache_miss_tokens": 216
+        }
+      }
+    },
+    {
+      "id": "H07",
+      "expected_strategy": "tile_radius_count",
+      "rule": {
+        "strategy": "no_repair",
+        "correct": false
+      },
+      "nemotron": {
+        "status": "live",
+        "strategy": "tile_radius_count",
+        "correct": true,
+        "latency_ms": 2233.3,
+        "model": "nvidia/nemotron-3-super-120b-a12b",
+        "usage": {
+          "completion_tokens": 365,
+          "prompt_tokens": 211,
+          "total_tokens": 576,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": null,
+            "audio_tokens": null,
+            "reasoning_tokens": 242,
+            "rejected_prediction_tokens": null
+          },
+          "prompt_tokens_details": {
+            "audio_tokens": null,
+            "cached_tokens": 0,
+            "created_cache_tokens": 0,
+            "multimodal_tokens": null
+          },
+          "prompt_cache_hit_tokens": 0,
+          "prompt_cache_miss_tokens": 211
+        }
+      }
+    },
+    {
+      "id": "H08",
+      "expected_strategy": "tile_radius_count",
+      "rule": {
+        "strategy": "tile_radius_count",
+        "correct": true
+      },
+      "nemotron": {
+        "status": "live",
+        "strategy": "tile_radius_count",
+        "correct": true,
+        "latency_ms": 1295.7,
+        "model": "nvidia/nemotron-3-super-120b-a12b",
+        "usage": {
+          "completion_tokens": 217,
+          "prompt_tokens": 214,
+          "total_tokens": 431,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": null,
+            "audio_tokens": null,
+            "reasoning_tokens": 107,
+            "rejected_prediction_tokens": null
+          },
+          "prompt_tokens_details": {
+            "audio_tokens": null,
+            "cached_tokens": 0,
+            "created_cache_tokens": 0,
+            "multimodal_tokens": null
+          },
+          "prompt_cache_hit_tokens": 0,
+          "prompt_cache_miss_tokens": 214
+        }
+      }
+    },
+    {
+      "id": "H09",
+      "expected_strategy": "no_repair",
+      "rule": {
+        "strategy": "no_repair",
+        "correct": true
+      },
+      "nemotron": {
+        "status": "live",
+        "strategy": "no_repair",
+        "correct": true,
+        "latency_ms": 1008.4,
+        "model": "nvidia/nemotron-3-super-120b-a12b",
+        "usage": {
+          "completion_tokens": 157,
+          "prompt_tokens": 217,
+          "total_tokens": 374,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": null,
+            "audio_tokens": null,
+            "reasoning_tokens": 77,
+            "rejected_prediction_tokens": null
+          },
+          "prompt_tokens_details": {
+            "audio_tokens": null,
+            "cached_tokens": 0,
+            "created_cache_tokens": 0,
+            "multimodal_tokens": null
+          },
+          "prompt_cache_hit_tokens": 0,
+          "prompt_cache_miss_tokens": 217
+        }
+      }
+    },
+    {
+      "id": "H10",
+      "expected_strategy": "no_repair",
+      "rule": {
+        "strategy": "no_repair",
+        "correct": true
+      },
+      "nemotron": {
+        "status": "live",
+        "strategy": "no_repair",
+        "correct": true,
+        "latency_ms": 1797.1,
+        "model": "nvidia/nemotron-3-super-120b-a12b",
+        "usage": {
+          "completion_tokens": 300,
+          "prompt_tokens": 211,
+          "total_tokens": 511,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": null,
+            "audio_tokens": null,
+            "reasoning_tokens": 181,
+            "rejected_prediction_tokens": null
+          },
+          "prompt_tokens_details": {
+            "audio_tokens": null,
+            "cached_tokens": 0,
+            "created_cache_tokens": 0,
+            "multimodal_tokens": null
+          },
+          "prompt_cache_hit_tokens": 0,
+          "prompt_cache_miss_tokens": 211
+        }
+      }
+    },
+    {
+      "id": "H11",
+      "expected_strategy": "no_repair",
+      "rule": {
+        "strategy": "no_repair",
+        "correct": true
+      },
+      "nemotron": {
+        "status": "live",
+        "strategy": "no_repair",
+        "correct": true,
+        "latency_ms": 2795.0,
+        "model": "nvidia/nemotron-3-super-120b-a12b",
+        "usage": {
+          "completion_tokens": 473,
+          "prompt_tokens": 214,
+          "total_tokens": 687,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": null,
+            "audio_tokens": null,
+            "reasoning_tokens": 376,
+            "rejected_prediction_tokens": null
+          },
+          "prompt_tokens_details": {
+            "audio_tokens": null,
+            "cached_tokens": 0,
+            "created_cache_tokens": 0,
+            "multimodal_tokens": null
+          },
+          "prompt_cache_hit_tokens": 0,
+          "prompt_cache_miss_tokens": 214
+        }
+      }
+    },
+    {
+      "id": "H12",
+      "expected_strategy": "no_repair",
+      "rule": {
+        "strategy": "no_repair",
+        "correct": true
+      },
+      "nemotron": {
+        "status": "error",
+        "strategy": null,
+        "correct": null,
+        "latency_ms": 3022.1,
+        "model": "nvidia/nemotron-3-super-120b-a12b",
+        "usage": null
+      }
+    }
+  ]
+}

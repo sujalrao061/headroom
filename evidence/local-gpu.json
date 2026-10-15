@@ -1,0 +1,375 @@
+{
+  "captured_at_utc": "2026-10-15T00:07:30.898945+00:00",
+  "scope": "Local fixed-workload GPU evidence; no live Nebius call in this capture",
+  "results": [
+    {
+      "case_id": "nearest",
+      "name": "Nearest neighbor",
+      "contract": "One reference index per query point",
+      "source": "def nearest(query, reference):\n    delta = query[:, None, :] - reference[None, :, :]\n    distance = torch.sqrt(torch.sum(delta * delta, dim=-1))\n    return torch.argmin(distance, dim=1)",
+      "hot_line": 2,
+      "size": 1536,
+      "memory_limit_mb": 8,
+      "latency_limit_ms": 1000,
+      "device": "NVIDIA GeForce RTX 3050 Ti Laptop GPU",
+      "torch_version": "2.7.1+cu118",
+      "cuda_version": "11.8",
+      "python_version": "3.12.14",
+      "baseline": {
+        "latency_ms": 1.394,
+        "peak_allocated_mb": 65.012,
+        "peak_total_allocated_mb": 65.047,
+        "base_allocated_mb": 0.035,
+        "peak_reserved_mb": 78.0
+      },
+      "candidate": {
+        "latency_ms": 36.061,
+        "peak_allocated_mb": 0.463,
+        "peak_total_allocated_mb": 0.499,
+        "base_allocated_mb": 0.035,
+        "peak_reserved_mb": 2.0
+      },
+      "library": {
+        "latency_ms": 0.556,
+        "peak_allocated_mb": 9.07,
+        "peak_total_allocated_mb": 17.23,
+        "base_allocated_mb": 8.16,
+        "peak_reserved_mb": 22.0,
+        "contract_passed": true,
+        "within_limits": false
+      },
+      "checks": [
+        {
+          "shape": "7\u00d711",
+          "passed": true,
+          "expected_shape": [
+            7
+          ],
+          "actual_shape": [
+            7
+          ]
+        },
+        {
+          "shape": "33\u00d719",
+          "passed": true,
+          "expected_shape": [
+            33
+          ],
+          "actual_shape": [
+            33
+          ]
+        },
+        {
+          "shape": "129\u00d7131",
+          "passed": true,
+          "expected_shape": [
+            129
+          ],
+          "actual_shape": [
+            129
+          ]
+        },
+        {
+          "shape": "equal-distance tie",
+          "passed": true,
+          "expected_shape": [
+            1
+          ],
+          "actual_shape": [
+            1
+          ]
+        },
+        {
+          "shape": "tile edges: 130\u00d7131",
+          "passed": true,
+          "expected_shape": [
+            130
+          ],
+          "actual_shape": [
+            130
+          ]
+        }
+      ],
+      "frontier": {
+        "tested": [
+          {
+            "size": 256,
+            "latency_ms": 1.47,
+            "peak_allocated_mb": 0.444,
+            "within_limits": true
+          },
+          {
+            "size": 512,
+            "latency_ms": 3.754,
+            "peak_allocated_mb": 0.448,
+            "within_limits": true
+          },
+          {
+            "size": 1024,
+            "latency_ms": 16.63,
+            "peak_allocated_mb": 0.456,
+            "within_limits": true
+          },
+          {
+            "size": 1536,
+            "latency_ms": 36.061,
+            "peak_allocated_mb": 0.463,
+            "within_limits": true
+          }
+        ],
+        "largest_tested_within_limits": 1536,
+        "untested_sizes": "unknown"
+      },
+      "accepted": true,
+      "reasons": [
+        "All sampled output, GPU memory, and latency checks passed. Untested inputs remain unknown."
+      ],
+      "repetitions": 3,
+      "warmups": 1,
+      "failure_kind": "application memory budget",
+      "patch": "Replace full pairwise allocation with two-axis tiled nearest-neighbor reduction; preserve first-index tie behavior.",
+      "patch_diff": "--- a/workload.py\n+++ b/workload.py\n@@\n-    delta = query[:, None, :] - reference[None, :, :]\n-    distance = torch.sqrt(torch.sum(delta * delta, dim=-1))\n-    return torch.argmin(distance, dim=1)\n+    rows = []\n+    for q0 in range(0, len(query), 128):\n+        q = query[q0:q0 + 128]\n+        best_distance = torch.full((len(q),), float('inf'), device=q.device, dtype=q.dtype)\n+        best_index = torch.zeros((len(q),), device=q.device, dtype=torch.long)\n+        for r0 in range(0, len(reference), 128):\n+            r = reference[r0:r0 + 128]\n+            distance = torch.sqrt(torch.sum((q[:, None, :] - r[None, :, :]) ** 2, dim=-1))\n+            local_distance, local_index = torch.min(distance, dim=1)\n+            improve = local_distance < best_distance\n+            best_distance = torch.where(improve, local_distance, best_distance)\n+            best_index = torch.where(improve, local_index + r0, best_index)\n+        rows.append(best_index)\n+    return torch.cat(rows)\n",
+      "regression_test": "assert torch.equal(nearest_baseline(q, r), tiled_nearest(q, r))",
+      "regression_test_source": "import torch\nfrom headroom.workloads import nearest_baseline, tiled_nearest\n\nfor n, m, seed in [(7, 11, 1), (33, 19, 2), (129, 131, 3)]:\n    torch.manual_seed(seed)\n    q, r = torch.randn(n, 3), torch.randn(m, 3)\n    assert torch.equal(nearest_baseline(q, r), tiled_nearest(q, r))\n\nq = torch.tensor([[0., 0., 0.]])\nr = torch.tensor([[1., 0., 0.], [-1., 0., 0.]])\nassert torch.equal(nearest_baseline(q, r), tiled_nearest(q, r, tile=1))\n\n# The equal-distance winners straddle the default 128-reference tile.\nq = torch.zeros(130, 3)\nr = torch.full((131, 3), 2.0)\nr[127], r[128] = torch.tensor([1., 0., 0.]), torch.tensor([-1., 0., 0.])\nq[128], r[130] = torch.tensor([10., 0., 0.]), torch.tensor([10., 0., 0.])\nassert torch.equal(nearest_baseline(q, r), tiled_nearest(q, r))\n",
+      "method": "fixed built-in workload; no arbitrary code execution"
+    },
+    {
+      "case_id": "matrix",
+      "name": "Full distance matrix",
+      "contract": "Every pairwise distance, shape [N, M]",
+      "source": "def matrix(query, reference):\n    delta = query[:, None, :] - reference[None, :, :]\n    distance = torch.sqrt(torch.sum(delta * delta, dim=-1))\n    return distance",
+      "hot_line": 2,
+      "size": 1536,
+      "memory_limit_mb": 8,
+      "latency_limit_ms": 1000,
+      "device": "NVIDIA GeForce RTX 3050 Ti Laptop GPU",
+      "torch_version": "2.7.1+cu118",
+      "cuda_version": "11.8",
+      "python_version": "3.12.14",
+      "baseline": {
+        "latency_ms": 1.133,
+        "peak_allocated_mb": 74.0,
+        "peak_total_allocated_mb": 82.16,
+        "base_allocated_mb": 8.16,
+        "peak_reserved_mb": 106.0
+      },
+      "candidate": {
+        "latency_ms": 38.155,
+        "peak_allocated_mb": 0.463,
+        "peak_total_allocated_mb": 8.624,
+        "base_allocated_mb": 8.16,
+        "peak_reserved_mb": 22.0
+      },
+      "library": {
+        "latency_ms": 0.646,
+        "peak_allocated_mb": 18.059,
+        "peak_total_allocated_mb": 26.219,
+        "base_allocated_mb": 8.16,
+        "peak_reserved_mb": 42.0,
+        "contract_passed": false,
+        "within_limits": false
+      },
+      "checks": [
+        {
+          "shape": "7\u00d711",
+          "passed": false,
+          "expected_shape": [
+            7,
+            11
+          ],
+          "actual_shape": [
+            7
+          ]
+        },
+        {
+          "shape": "33\u00d719",
+          "passed": false,
+          "expected_shape": [
+            33,
+            19
+          ],
+          "actual_shape": [
+            33
+          ]
+        },
+        {
+          "shape": "129\u00d7131",
+          "passed": false,
+          "expected_shape": [
+            129,
+            131
+          ],
+          "actual_shape": [
+            129
+          ]
+        },
+        {
+          "shape": "equal-distance tie",
+          "passed": false,
+          "expected_shape": [
+            1,
+            3
+          ],
+          "actual_shape": [
+            1
+          ]
+        },
+        {
+          "shape": "tile edges: 130\u00d7131",
+          "passed": false,
+          "expected_shape": [
+            130,
+            131
+          ],
+          "actual_shape": [
+            130
+          ]
+        }
+      ],
+      "frontier": null,
+      "accepted": false,
+      "reasons": [
+        "Output contract failed: the tiled candidate returns indices, but this workload requires the full matrix."
+      ],
+      "repetitions": 3,
+      "warmups": 1,
+      "failure_kind": "application memory budget",
+      "patch": "Replace full pairwise allocation with two-axis tiled nearest-neighbor reduction; preserve first-index tie behavior.",
+      "patch_diff": "The same nearest-index patch was evaluated but rejected: it removes required matrix values.",
+      "regression_test": "assert torch.equal(nearest_baseline(q, r), tiled_nearest(q, r))",
+      "regression_test_source": "import torch\nfrom headroom.workloads import matrix_baseline, tiled_nearest\n\nq, r = torch.randn(7, 3), torch.randn(11, 3)\nassert matrix_baseline(q, r).shape == (7, 11)\nassert tiled_nearest(q, r).shape == (7,)\n",
+      "method": "fixed built-in workload; no arbitrary code execution"
+    },
+    {
+      "case_id": "radius",
+      "name": "Radius count",
+      "contract": "Number of reference points within radius 1.0 for each query, shape [N]",
+      "source": "def radius_count(query, reference):\n    delta = query[:, None, :] - reference[None, :, :]\n    distance = torch.sqrt(torch.sum(delta * delta, dim=-1))\n    return torch.sum(distance <= 1.0, dim=1)",
+      "hot_line": 2,
+      "size": 1536,
+      "memory_limit_mb": 8,
+      "latency_limit_ms": 1000,
+      "device": "NVIDIA GeForce RTX 3050 Ti Laptop GPU",
+      "torch_version": "2.7.1+cu118",
+      "cuda_version": "11.8",
+      "python_version": "3.12.14",
+      "baseline": {
+        "latency_ms": 1.348,
+        "peak_allocated_mb": 65.012,
+        "peak_total_allocated_mb": 73.172,
+        "base_allocated_mb": 8.16,
+        "peak_reserved_mb": 98.0
+      },
+      "candidate": {
+        "latency_ms": 31.726,
+        "peak_allocated_mb": 0.461,
+        "peak_total_allocated_mb": 8.621,
+        "base_allocated_mb": 8.16,
+        "peak_reserved_mb": 22.0
+      },
+      "library": {
+        "latency_ms": 0.902,
+        "peak_allocated_mb": 20.898,
+        "peak_total_allocated_mb": 29.059,
+        "base_allocated_mb": 8.16,
+        "peak_reserved_mb": 40.0,
+        "contract_passed": true,
+        "within_limits": false
+      },
+      "checks": [
+        {
+          "shape": "7\u00d711",
+          "passed": true,
+          "expected_shape": [
+            7
+          ],
+          "actual_shape": [
+            7
+          ]
+        },
+        {
+          "shape": "33\u00d719",
+          "passed": true,
+          "expected_shape": [
+            33
+          ],
+          "actual_shape": [
+            33
+          ]
+        },
+        {
+          "shape": "129\u00d7131",
+          "passed": true,
+          "expected_shape": [
+            129
+          ],
+          "actual_shape": [
+            129
+          ]
+        },
+        {
+          "shape": "exact-radius boundary",
+          "passed": true,
+          "expected_shape": [
+            1
+          ],
+          "actual_shape": [
+            1
+          ]
+        },
+        {
+          "shape": "tile edges: 130\u00d7131",
+          "passed": true,
+          "expected_shape": [
+            130
+          ],
+          "actual_shape": [
+            130
+          ]
+        }
+      ],
+      "frontier": {
+        "tested": [
+          {
+            "size": 256,
+            "latency_ms": 0.947,
+            "peak_allocated_mb": 0.441,
+            "within_limits": true
+          },
+          {
+            "size": 512,
+            "latency_ms": 3.53,
+            "peak_allocated_mb": 0.445,
+            "within_limits": true
+          },
+          {
+            "size": 1024,
+            "latency_ms": 14.309,
+            "peak_allocated_mb": 0.453,
+            "within_limits": true
+          },
+          {
+            "size": 1536,
+            "latency_ms": 31.726,
+            "peak_allocated_mb": 0.461,
+            "within_limits": true
+          }
+        ],
+        "largest_tested_within_limits": 1536,
+        "untested_sizes": "unknown"
+      },
+      "accepted": true,
+      "reasons": [
+        "All sampled output, GPU memory, and latency checks passed. Untested inputs remain unknown."
+      ],
+      "repetitions": 3,
+      "warmups": 1,
+      "failure_kind": "application memory budget",
+      "patch": "Replace full pairwise allocation with a tiled radius count; preserve the inclusive radius boundary.",
+      "patch_diff": "--- a/workload.py\n+++ b/workload.py\n@@\n-    delta = query[:, None, :] - reference[None, :, :]\n-    distance = torch.sqrt(torch.sum(delta * delta, dim=-1))\n-    return torch.sum(distance <= 1.0, dim=1)\n+    rows = []\n+    for q0 in range(0, len(query), 128):\n+        q = query[q0:q0 + 128]\n+        counts = torch.zeros((len(q),), device=q.device, dtype=torch.long)\n+        for r0 in range(0, len(reference), 128):\n+            r = reference[r0:r0 + 128]\n+            distance = torch.sqrt(torch.sum((q[:, None, :] - r[None, :, :]) ** 2, dim=-1))\n+            counts += torch.sum(distance <= 1.0, dim=1)\n+        rows.append(counts)\n+    return torch.cat(rows)\n",
+      "regression_test": "assert torch.equal(radius_baseline(q, r), tiled_radius_count(q, r))",
+      "regression_test_source": "import torch\nfrom headroom.workloads import radius_baseline, tiled_radius_count\n\nfor n, m, seed in [(7, 11, 1), (33, 19, 2), (129, 131, 3)]:\n    torch.manual_seed(seed)\n    q, r = torch.randn(n, 3), torch.randn(m, 3)\n    assert torch.equal(radius_baseline(q, r), tiled_radius_count(q, r))\n\nq = torch.tensor([[0., 0., 0.]])\nr = torch.tensor([[1., 0., 0.], [-1., 0., 0.], [2., 0., 0.]])\nassert torch.equal(radius_baseline(q, r), tiled_radius_count(q, r, tile=1))\n\n# Exact-radius points straddle the default 128-reference tile.\nq = torch.zeros(130, 3)\nr = torch.full((131, 3), 2.0)\nr[127], r[128] = torch.tensor([1., 0., 0.]), torch.tensor([-1., 0., 0.])\nq[128], r[130] = torch.tensor([10., 0., 0.]), torch.tensor([10., 0., 0.])\nassert torch.equal(radius_baseline(q, r), tiled_radius_count(q, r))\n",
+      "method": "fixed built-in workload; no arbitrary code execution"
+    }
+  ]
+}

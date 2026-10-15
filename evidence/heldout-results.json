@@ -1,0 +1,107 @@
+{
+  "captured_at_utc": "2026-10-14T03:44:25.144619+00:00",
+  "protocol": "Hand-authored contract variants frozen before any live model run. This evaluates strategy selection only; it does not prove GPU correctness or generalization to arbitrary code.",
+  "live_model_requested": false,
+  "total_cases": 12,
+  "rule_correct": 5,
+  "model_correct": null,
+  "model_completed": 0,
+  "rows": [
+    {
+      "id": "H01",
+      "expected_strategy": "tile_nearest",
+      "rule": {
+        "strategy": "no_repair",
+        "correct": false
+      }
+    },
+    {
+      "id": "H02",
+      "expected_strategy": "tile_nearest",
+      "rule": {
+        "strategy": "no_repair",
+        "correct": false
+      }
+    },
+    {
+      "id": "H03",
+      "expected_strategy": "tile_nearest",
+      "rule": {
+        "strategy": "no_repair",
+        "correct": false
+      }
+    },
+    {
+      "id": "H04",
+      "expected_strategy": "tile_nearest",
+      "rule": {
+        "strategy": "no_repair",
+        "correct": false
+      }
+    },
+    {
+      "id": "H05",
+      "expected_strategy": "tile_radius_count",
+      "rule": {
+        "strategy": "no_repair",
+        "correct": false
+      }
+    },
+    {
+      "id": "H06",
+      "expected_strategy": "tile_radius_count",
+      "rule": {
+        "strategy": "no_repair",
+        "correct": false
+      }
+    },
+    {
+      "id": "H07",
+      "expected_strategy": "tile_radius_count",
+      "rule": {
+        "strategy": "no_repair",
+        "correct": false
+      }
+    },
+    {
+      "id": "H08",
+      "expected_strategy": "tile_radius_count",
+      "rule": {
+        "strategy": "tile_radius_count",
+        "correct": true
+      }
+    },
+    {
+      "id": "H09",
+      "expected_strategy": "no_repair",
+      "rule": {
+        "strategy": "no_repair",
+        "correct": true
+      }
+    },
+    {
+      "id": "H10",
+      "expected_strategy": "no_repair",
+      "rule": {
+        "strategy": "no_repair",
+        "correct": true
+      }
+    },
+    {
+      "id": "H11",
+      "expected_strategy": "no_repair",
+      "rule": {
+        "strategy": "no_repair",
+        "correct": true
+      }
+    },
+    {
+      "id": "H12",
+      "expected_strategy": "no_repair",
+      "rule": {
+        "strategy": "no_repair",
+        "correct": true
+      }
+    }
+  ]
+}
