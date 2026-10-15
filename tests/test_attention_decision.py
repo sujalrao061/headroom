@@ -20,6 +20,11 @@ class AttentionDecisionTests(unittest.TestCase):
         self.assertIsNone(result["model"])
         self.assertIsNone(result["model_agrees"])
 
+    def test_evidence_hash_is_stable_across_windows_line_endings(self):
+        lf_result = evaluate(self.raw.replace(b"\r\n", b"\n"))
+        crlf_result = evaluate(self.raw.replace(b"\r\n", b"\n").replace(b"\n", b"\r\n"))
+        self.assertEqual(lf_result["source_sha256"], crlf_result["source_sha256"])
+
     def test_no_verified_option(self):
         self.report["memory_budget_mib"] = 0
         self.assertEqual(independent_choice(self.report), "no_repair")

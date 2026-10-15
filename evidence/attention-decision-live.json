@@ -1,6 +1,6 @@
 {
   "captured_at_utc": "2026-10-14T15:13:53.261472+00:00",
-  "source_sha256": "7743bd55f5300e69a772cbe5a19e4a9f4231d2bba8479daa448fb42c6afb0266",
+  "source_sha256": "97ce59501d3fdbe563b15bc91e9a6ca264a05e4163b6780f32a79641037f9d91",
   "scope": "One saved local attention measurement; strategy selection only, not a new GPU run",
   "independent_choice": "pytorch_sdpa",
   "live_model_requested": true,

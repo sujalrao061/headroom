@@ -31,7 +31,9 @@ def evaluate(raw: bytes, live: bool = False) -> dict:
     report = json.loads(raw)
     selected = independent_choice(report)
     result = {"captured_at_utc": datetime.now(timezone.utc).isoformat(),
-              "source_sha256": hashlib.sha256(raw).hexdigest(),
+              # Normalize Git's Windows checkout line endings so Vercel/Linux
+              # computes the same evidence identity as a Windows capture.
+              "source_sha256": hashlib.sha256(raw.replace(b"\r\n", b"\n")).hexdigest(),
               "scope": "One saved local attention measurement; strategy selection only, not a new GPU run",
               "independent_choice": selected, "live_model_requested": live,
               "model": None, "model_agrees": None}
