@@ -61,7 +61,7 @@ The [live attention decision](evidence/attention-decision-live.json) shows that 
 - Run unfamiliar fixed workloads and the three-way comparison: deterministic rules, code/error-only Nemotron, evidence-grounded Nemotron, with comparable budgets and inference cost. A 12-case wording check has been captured separately.
 - Deploy a constrained public GPU worker so judges can run fresh GPU measurements from the hosted site.
 
-**Public demo URL:** pending
+**Public demo URL:** https://headroom-beta-tan.vercel.app
 
 **Public repository URL:** https://github.com/sujalrao061/headroom
 
