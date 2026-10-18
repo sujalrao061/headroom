@@ -26,6 +26,8 @@ The [live attention decision](evidence/attention-decision-live.json) shows that 
 
 The public [correctness gauntlet](evidence/contract-gauntlet.json) adds 490 passing comparisons for nearest-neighbor and radius-count candidates on an RTX 3050 Ti. It spans 14 uneven and asymmetric shapes, three deterministic seeds, five tile sizes, duplicate-heavy and tightly clustered inputs, and adversarial cross-tile boundary cases. It also verifies that injected regressions for skipped nearest tiles and an exclusive radius boundary are detected. This increases confidence in those fixed implementations; it is not universal correctness proof, a performance measurement, or an unfamiliar-workload generalization result. Reproduce it with `python -m scripts.run_contract_gauntlet`.
 
+The demo also exposes a frozen [12-case wording evaluation](evidence/heldout-live.json): a simple keyword rule matched 5 labels, while Nemotron returned 11 correct usable decisions and one request failed. Each case varies the wording of the same known allocation/output-contract task. This is limited evidence of wording robustness, not arbitrary workload reasoning, GPU correctness, or a fair comparison with a stronger baseline.
+
 ## Architecture and safety
 
 - **Frontend:** Next.js, React, TypeScript. Guest use needs no login, phone number, email address, or file upload.

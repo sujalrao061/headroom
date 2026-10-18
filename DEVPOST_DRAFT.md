@@ -36,6 +36,8 @@ For the saved 1,536 × 1,536 nearest-neighbor case, the tiled candidate passed f
 
 We expanded the reproducible GPU correctness gauntlet to 490 passing nearest-neighbor and radius-count comparisons across 14 uneven/asymmetric shapes, three seeds, five tile sizes, duplicate-heavy and tightly clustered inputs, and explicit tile-boundary cases. It also confirms that two deliberately injected regressions are caught. For the separate attention workload, nine finite float32 correctness shapes pass for both Python tiling and PyTorch SDPA; SDPA remains the measured recommendation. These finite tests strengthen confidence in the fixed examples but do not establish correctness for arbitrary inputs or generalization to unfamiliar workloads.
 
+To make Nemotron's role inspectable, the demo also shows a frozen 12-case wording evaluation: the simple rule matched 5 expected strategy labels, while Nemotron produced 11 correct usable decisions and one request error. This is a small test of wording robustness on one known allocation pattern, not an unfamiliar-workload benchmark or proof that a model beats a stronger decision system. The full per-case report is linked from the site.
+
 ## Limitations and next steps
 
 The GPU results are from one local laptop GPU and a finite set of inputs; they do not prove correctness for every workload or the largest feasible size. The public site replays those measurements. Future work is a constrained hosted GPU worker, unfamiliar executable workloads, and a matched-cost comparison between deterministic selection and Nemotron with and without measurement evidence.
