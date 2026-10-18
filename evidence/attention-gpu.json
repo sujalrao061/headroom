@@ -1,6 +1,6 @@
 {
-  "captured_at_utc": "2026-10-14T15:09:37.116604+00:00",
-  "scope": "Independent single-head float32 attention workload; no Nebius call or arbitrary code execution",
+  "captured_at_utc": "2026-10-18T17:00:37.584480+00:00",
+  "scope": "Independent single-head float32 attention workload; nine CPU correctness shapes and local GPU measurement; no Nebius call or arbitrary code execution",
   "device": "NVIDIA GeForce RTX 3050 Ti Laptop GPU",
   "torch_version": "2.7.1+cu118",
   "cuda_version": "11.8",
@@ -12,13 +12,57 @@
   "checks": [
     {
       "shape": [
+        1,
+        1,
+        8
+      ],
+      "max_absolute_error": 0.0,
+      "passed": true,
+      "library_max_absolute_error": 0.0,
+      "library_passed": true
+    },
+    {
+      "shape": [
+        1,
+        129,
+        8
+      ],
+      "max_absolute_error": 8e-08,
+      "passed": true,
+      "library_max_absolute_error": 7e-08,
+      "library_passed": true
+    },
+    {
+      "shape": [
+        129,
+        1,
+        8
+      ],
+      "max_absolute_error": 0.0,
+      "passed": true,
+      "library_max_absolute_error": 0.0,
+      "library_passed": true
+    },
+    {
+      "shape": [
         7,
         11,
         8
       ],
-      "max_absolute_error": 1.8e-07,
+      "max_absolute_error": 2.4e-07,
       "passed": true,
-      "library_max_absolute_error": 3e-07,
+      "library_max_absolute_error": 3.6e-07,
+      "library_passed": true
+    },
+    {
+      "shape": [
+        63,
+        65,
+        16
+      ],
+      "max_absolute_error": 2.1e-07,
+      "passed": true,
+      "library_max_absolute_error": 2.7e-07,
       "library_passed": true
     },
     {
@@ -27,9 +71,20 @@
         129,
         16
       ],
+      "max_absolute_error": 8.3e-07,
+      "passed": true,
+      "library_max_absolute_error": 6e-07,
+      "library_passed": true
+    },
+    {
+      "shape": [
+        127,
+        128,
+        32
+      ],
       "max_absolute_error": 3.3e-07,
       "passed": true,
-      "library_max_absolute_error": 3.3e-07,
+      "library_max_absolute_error": 3e-07,
       "library_passed": true
     },
     {
@@ -38,28 +93,39 @@
         257,
         32
       ],
-      "max_absolute_error": 1.5e-07,
+      "max_absolute_error": 2.1e-07,
       "passed": true,
-      "library_max_absolute_error": 1.8e-07,
+      "library_max_absolute_error": 2.7e-07,
+      "library_passed": true
+    },
+    {
+      "shape": [
+        257,
+        513,
+        64
+      ],
+      "max_absolute_error": 1.6e-07,
+      "passed": true,
+      "library_max_absolute_error": 2.1e-07,
       "library_passed": true
     }
   ],
   "baseline": {
-    "latency_ms": 0.489,
+    "latency_ms": 0.611,
     "peak_allocated_mb": 18.75,
     "peak_total_allocated_mb": 28.0,
     "base_allocated_mb": 9.25,
     "peak_reserved_mb": 42.0
   },
   "candidate": {
-    "latency_ms": 91.221,
+    "latency_ms": 107.668,
     "peak_allocated_mb": 1.205,
     "peak_total_allocated_mb": 10.455,
     "base_allocated_mb": 9.25,
     "peak_reserved_mb": 44.0
   },
   "library": {
-    "latency_ms": 0.55,
+    "latency_ms": 0.556,
     "peak_allocated_mb": 0.75,
     "peak_total_allocated_mb": 10.0,
     "base_allocated_mb": 9.25,
@@ -70,5 +136,5 @@
   "library_within_budget": true,
   "recommended": "pytorch_sdpa",
   "selection_policy": "Among validated implementations within the 8 MiB additional-allocation budget, select the lowest measured median latency. No model chose this result.",
-  "limitations": "Three finite CPU contract checks and local GPU measurements; no masks, dropout, gradients, mixed precision, or production kernel comparison."
+  "limitations": "Nine finite CPU contract checks and local GPU measurements; no masks, dropout, gradients, mixed precision, or production kernel comparison."
 }

@@ -14,9 +14,31 @@ from headroom.workloads import (
 )
 
 
-SIZES = [(1, 3), (7, 11), (31, 33), (63, 65), (127, 129), (128, 130), (129, 131), (255, 257)]
+SIZES = [
+    (1, 3), (7, 11), (31, 33), (63, 65), (127, 129), (128, 130), (129, 131), (255, 257),
+    # Larger and strongly asymmetric cases exercise independent query/reference tails.
+    (2, 259), (259, 2), (257, 257), (257, 511), (511, 257), (513, 521),
+]
 TILES = [7, 31, 64, 127, 128]
 SEEDS = [3, 17, 41]
+STRESS_SHAPE = (131, 257)
+
+
+def _stress_inputs(device, family, seed):
+    """Inputs with repeated winners or tight clusters."""
+    n, m = STRESS_SHAPE
+    generator = torch.Generator(device="cpu").manual_seed(seed * 100_003 + 991)
+    if family == "duplicate-heavy":
+        # A small integer lattice creates exact ties and repeated points across tiles.
+        query = torch.randint(-2, 3, (n, 3), generator=generator).float()
+        reference = torch.randint(-2, 3, (m, 3), generator=generator).float()
+    elif family == "tight-clusters":
+        # Large shared offsets with small perturbations challenge distance comparisons.
+        query = 10_000.0 + torch.randn((n, 3), generator=generator) * 0.01
+        reference = 10_000.0 + torch.randn((m, 3), generator=generator) * 0.01
+    else:
+        raise ValueError(f"Unknown stress input family: {family}")
+    return query.to(device), reference.to(device)
 
 
 def _equal(left, right):
@@ -57,6 +79,21 @@ def capture():
                         "shape": [n, m],
                         "seed": seed,
                         "tile": tile,
+                        "passed": _equal(actual, expected),
+                    })
+
+        for family in ("duplicate-heavy", "tight-clusters"):
+            for seed in SEEDS:
+                query, reference = _stress_inputs(device, family, seed)
+                expected = reference_fn(query, reference)
+                for tile in TILES:
+                    actual = candidate_fn(query, reference, tile=tile)
+                    trials.append({
+                        "case": case_id,
+                        "shape": [*STRESS_SHAPE],
+                        "seed": seed,
+                        "tile": tile,
+                        "kind": family,
                         "passed": _equal(actual, expected),
                     })
 
@@ -101,7 +138,11 @@ def capture():
         "device": torch.cuda.get_device_name(device) if device.type == "cuda" else "CPU (correctness only)",
         "torch_version": torch.__version__,
         "python_version": platform.python_version(),
-        "parameters": {"random_shapes": len(SIZES), "seeds_per_shape": len(SEEDS), "tile_sizes": TILES, "cases": ["nearest", "radius"]},
+        "parameters": {
+            "random_shapes": len(SIZES), "seeds_per_shape": len(SEEDS),
+            "tile_sizes": TILES, "cases": ["nearest", "radius"],
+            "stress_input_families": ["duplicate-heavy", "tight-clusters"],
+        },
         "passed": all(row["passed"] for row in trials) and nearest_bug_detected and radius_bug_detected,
         "checks_passed": sum(row["passed"] for row in trials),
         "checks_total": len(trials),

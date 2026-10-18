@@ -34,6 +34,8 @@ The central challenge was separating a memory improvement from an output-contrac
 
 For the saved 1,536 × 1,536 nearest-neighbor case, the tiled candidate passed five finite output checks, including tie and tile-edge cases, while reducing peak additional allocation under the configured 8 MiB per-operation budget. The public “Ask Nemotron now” action was verified on October 14, 2026: the live model selected `tile_nearest`, agreeing with the independent validator. The displayed timing penalty and tested-size range remain visible.
 
+We expanded the reproducible GPU correctness gauntlet to 490 passing nearest-neighbor and radius-count comparisons across 14 uneven/asymmetric shapes, three seeds, five tile sizes, duplicate-heavy and tightly clustered inputs, and explicit tile-boundary cases. It also confirms that two deliberately injected regressions are caught. For the separate attention workload, nine finite float32 correctness shapes pass for both Python tiling and PyTorch SDPA; SDPA remains the measured recommendation. These finite tests strengthen confidence in the fixed examples but do not establish correctness for arbitrary inputs or generalization to unfamiliar workloads.
+
 ## Limitations and next steps
 
 The GPU results are from one local laptop GPU and a finite set of inputs; they do not prove correctness for every workload or the largest feasible size. The public site replays those measurements. Future work is a constrained hosted GPU worker, unfamiliar executable workloads, and a matched-cost comparison between deterministic selection and Nemotron with and without measurement evidence.

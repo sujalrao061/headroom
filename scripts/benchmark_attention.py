@@ -17,7 +17,12 @@ def inputs(n: int, m: int, d: int, device: torch.device, seed: int):
 
 def validate() -> list[dict]:
     rows = []
-    for n, m, d, seed in ((7, 11, 8, 1), (65, 129, 16, 2), (131, 257, 32, 3)):
+    cases = (
+        (1, 1, 8, 1), (1, 129, 8, 2), (129, 1, 8, 3),
+        (7, 11, 8, 4), (63, 65, 16, 5), (65, 129, 16, 6),
+        (127, 128, 32, 7), (131, 257, 32, 8), (257, 513, 64, 9),
+    )
+    for n, m, d, seed in cases:
         q, k, v = inputs(n, m, d, torch.device("cpu"), seed)
         expected = full_attention(q, k, v)
         actual = tiled_attention(q, k, v)
@@ -58,7 +63,7 @@ def capture(size: int = 1536, width: int = 64, memory_budget_mib: int = 8) -> di
         viable.append(("pytorch_sdpa", library["latency_ms"]))
     recommended = min(viable, key=lambda item: item[1])[0] if viable else "none_verified"
     return {"captured_at_utc": datetime.now(timezone.utc).isoformat(),
-            "scope": "Independent single-head float32 attention workload; no Nebius call or arbitrary code execution",
+            "scope": "Independent single-head float32 attention workload; nine CPU correctness shapes and local GPU measurement; no Nebius call or arbitrary code execution",
             "device": torch.cuda.get_device_name(device) if device.type == "cuda" else "CPU (GPU unverified)",
             "torch_version": torch.__version__, "cuda_version": torch.version.cuda,
             "shape": {"sequence_length": size, "head_dimension": width},
@@ -67,7 +72,7 @@ def capture(size: int = 1536, width: int = 64, memory_budget_mib: int = 8) -> di
             "baseline_within_budget": baseline_ok, "candidate_within_budget": candidate_ok, "library_within_budget": library_ok,
             "recommended": recommended,
             "selection_policy": f"Among validated implementations within the {memory_budget_mib} MiB additional-allocation budget, select the lowest measured median latency. No model chose this result.",
-            "limitations": "Three finite CPU contract checks and local GPU measurements; no masks, dropout, gradients, mixed precision, or production kernel comparison."}
+            "limitations": "Nine finite CPU contract checks and local GPU measurements; no masks, dropout, gradients, mixed precision, or production kernel comparison."}
 
 
 def main():
