@@ -1,0 +1,109 @@
+{
+  "captured_at_utc": "2026-10-18T17:06:34.366595+00:00",
+  "scope": "Nine deterministic CPU float32 output comparisons for full attention, Python tiling, and PyTorch SDPA. These validate sampled forward outputs only.",
+  "checks_passed": 9,
+  "checks_total": 9,
+  "passed": true,
+  "limitations": "Nine finite CPU correctness shapes and separate local GPU measurements; no masks, dropout, gradients, mixed precision, or production kernel comparison.",
+  "checks": [
+    {
+      "shape": [
+        1,
+        1,
+        8
+      ],
+      "max_absolute_error": 0.0,
+      "passed": true,
+      "library_max_absolute_error": 0.0,
+      "library_passed": true
+    },
+    {
+      "shape": [
+        1,
+        129,
+        8
+      ],
+      "max_absolute_error": 8e-08,
+      "passed": true,
+      "library_max_absolute_error": 7e-08,
+      "library_passed": true
+    },
+    {
+      "shape": [
+        129,
+        1,
+        8
+      ],
+      "max_absolute_error": 0.0,
+      "passed": true,
+      "library_max_absolute_error": 0.0,
+      "library_passed": true
+    },
+    {
+      "shape": [
+        7,
+        11,
+        8
+      ],
+      "max_absolute_error": 2.4e-07,
+      "passed": true,
+      "library_max_absolute_error": 3.6e-07,
+      "library_passed": true
+    },
+    {
+      "shape": [
+        63,
+        65,
+        16
+      ],
+      "max_absolute_error": 2.1e-07,
+      "passed": true,
+      "library_max_absolute_error": 2.7e-07,
+      "library_passed": true
+    },
+    {
+      "shape": [
+        65,
+        129,
+        16
+      ],
+      "max_absolute_error": 8.3e-07,
+      "passed": true,
+      "library_max_absolute_error": 6e-07,
+      "library_passed": true
+    },
+    {
+      "shape": [
+        127,
+        128,
+        32
+      ],
+      "max_absolute_error": 3.3e-07,
+      "passed": true,
+      "library_max_absolute_error": 3e-07,
+      "library_passed": true
+    },
+    {
+      "shape": [
+        131,
+        257,
+        32
+      ],
+      "max_absolute_error": 2.1e-07,
+      "passed": true,
+      "library_max_absolute_error": 2.7e-07,
+      "library_passed": true
+    },
+    {
+      "shape": [
+        257,
+        513,
+        64
+      ],
+      "max_absolute_error": 1.6e-07,
+      "passed": true,
+      "library_max_absolute_error": 2.1e-07,
+      "library_passed": true
+    }
+  ]
+}

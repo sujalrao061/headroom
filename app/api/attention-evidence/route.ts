@@ -11,6 +11,7 @@ export async function GET() {
     const evidenceDir = join(process.cwd(), "evidence");
     const gpuBytes = await readFile(join(evidenceDir, "attention-gpu.json"));
     const gpu = JSON.parse(gpuBytes.toString("utf8"));
+    const contracts = JSON.parse(await readFile(join(evidenceDir, "attention-contracts.json"), "utf8"));
     // Git may check out the same JSON with CRLF on Windows and LF on Linux.
     const canonicalGpuBytes = Buffer.from(gpuBytes.toString("utf8").replace(/\r\n/g, "\n"), "utf8");
     const digest = createHash("sha256").update(canonicalGpuBytes).digest("hex");
@@ -18,6 +19,9 @@ export async function GET() {
     const verified = decision.source_sha256 === digest && decision.model?.status === "live";
     const result = {
       ...gpu,
+      checks: contracts.checks,
+      limitations: contracts.limitations,
+      correctness_captured_at: contracts.captured_at_utc,
       recorded_at: gpu.captured_at_utc,
       evidence_verified: verified,
       model_agrees: verified ? decision.model_agrees : null,
