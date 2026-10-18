@@ -1,6 +1,6 @@
 # Devpost submission draft — Headroom
 
-**Track:** Coding and Agentic Engineering
+**Recommended track:** Best Apps and Agents
 
 **Tagline:** Make a PyTorch workload fit its GPU, then prove the required output still survives.
 
@@ -8,7 +8,7 @@
 
 **Source:** https://github.com/sujalrao061/headroom
 
-**Video:** Add the public YouTube URL after recording.
+**Video:** https://youtu.be/RYXefc-9gwc (public, 1:42, English captions; AI narration disclosed). GPU results are recorded from the local RTX 3050 Ti; only the NVIDIA Nemotron decision is live on the hosted site.
 
 ## Inspiration
 

@@ -1,6 +1,6 @@
 # Headroom — submission draft
 
-**Track:** Coding and Agentic Engineering
+**Recommended track:** Best Apps and Agents
 
 **One-line pitch:** Make a PyTorch workload fit its GPU, prove the required outputs survived, and leave a reviewable regression test.
 
@@ -33,17 +33,19 @@ The public [correctness gauntlet](evidence/contract-gauntlet.json) adds 250/250 
 - **Model:** NVIDIA Nemotron via Nebius Token Factory, server-side key only. The model chooses a named strategy after seeing measured evidence; the independent validator remains the acceptance authority.
 - **Data:** No database or personal data in the current demo. If saved jobs are added, use private storage with ownership checks, retention/deletion controls, and a separately reviewed isolation design before accepting arbitrary code.
 
-## Video storyboard, target 2:40
+## Demo video storyboard, 1:42
 
 | Time | Show | Narration point |
 | --- | --- | --- |
-| 0:00–0:18 | Two contracts side by side | The same memory pattern has two different promises. |
-| 0:18–0:45 | Nearest case and source line | Pairwise broadcasting is the allocation hot spot; the budget is explicit. |
-| 0:45–1:14 | Run and result | Show real GPU measurements, five contract checks, and the measured `torch.cdist` alternative. |
-| 1:14–1:39 | Tested sizes, patch, downloads | We report only tested sizes and leave a regression test. |
-| 1:39–2:03 | Full-matrix case, rejected run | The same candidate saves memory but destroys required output, so it is rejected. |
-| 2:03–2:26 | Live Nemotron response and request trace | Record this **only after** a real Token Factory call succeeds. Show server-side integration without showing the key. |
-| 2:26–2:40 | Scope and close | State the audience, measured limits, and why the validator is independent. |
+| 0:00–0:14 | GPU memory result first | Recorded RTX 3050 Ti allocation falls from about 65 MB to under 0.5 MB for nearest-neighbor output. |
+| 0:14–0:24 | Problem and product | Headroom checks whether a memory repair preserves the answer. |
+| 0:24–0:36 | Nearest-neighbor output contract | The workload needs one nearest index per query, not every pairwise distance. |
+| 0:36–0:47 | Five checks and measured tradeoff | The candidate preserves tested outputs, while taking longer than the baseline. |
+| 0:47–0:59 | Full-matrix counterexample | The nearest-index repair is rejected when every distance is required. |
+| 0:59–1:14 | Live NVIDIA Nemotron via Nebius Token Factory | The model reviews saved GPU evidence and chooses from bounded strategies. |
+| 1:14–1:24 | Model decision and independent validator | The captured model choice agrees with the validator; GPU measurements remain recorded evidence. |
+| 1:24–1:33 | Attention comparison | PyTorch SDPA wins the measured memory and latency comparison. |
+| 1:33–1:42 | Public demo and repository | Invite judges to explore the live site and source. |
 
 ## Minimum before submission
 
@@ -53,8 +55,8 @@ The public [correctness gauntlet](evidence/contract-gauntlet.json) adds 250/250 
 - [x] Publish the MIT-licensed repository and add its URL here.
 - [x] Deploy the web frontend and verify the public saved-evidence flow. See [DEPLOY.md](DEPLOY.md).
 - [x] Configure the server-side Nebius key and verify the hosted “Ask Nemotron now” action produces a live Token Factory response. On October 14, 2026, the public site returned `tile_nearest` for the saved nearest-neighbor run, agreeing with the independent validator. The GPU measurements remain labeled as recorded evidence.
-- [ ] Record and publish a public YouTube video under three minutes; add the URL here.
-- [ ] Enter the project description, track, working demo URL, repository URL, video URL, and honest Nebius/NVIDIA feedback on Devpost.
+- [x] Publish the prepared 1:42 demo video publicly on YouTube with English captions and the AI-use disclosure.
+- [ ] Enter the project description, recommended track, working demo URL, repository URL, video URL, and honest Nebius/NVIDIA feedback on Devpost.
 - [x] Review the official [rules](https://nebiusglobalaihackathon.devpost.com/rules) and [FAQ](https://nebiusglobalaihackathon.devpost.com/details/faqs).
 
 ## Improvements if time remains
@@ -67,4 +69,4 @@ The public [correctness gauntlet](evidence/contract-gauntlet.json) adds 250/250 
 
 **Public repository URL:** https://github.com/sujalrao061/headroom
 
-**Public video URL:** pending
+**Public video URL:** https://youtu.be/RYXefc-9gwc
