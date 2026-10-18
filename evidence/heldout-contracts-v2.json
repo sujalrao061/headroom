@@ -1,0 +1,19 @@
+{
+  "protocol": "Fresh follow-up set authored after the original frozen evaluation. It tests bounded strategy selection on new wording for one fixed allocation pattern; it is not an executable-workload or GPU-correctness benchmark. Transient transport/capacity failures may be retried up to two times and every attempt is recorded. Wrong, malformed, or unsupported model answers are never retried.",
+  "shared_source": "def workload(query, reference):\n    delta = query[:, None, :] - reference[None, :, :]\n    distance = torch.sqrt(torch.sum(delta * delta, dim=-1))\n    return postprocess(distance)",
+  "size": 1024,
+  "cases": [
+    {"id": "V2-01", "contract": "For every query row, return the position of its nearest reference row. If two are equally close, return the smaller position.", "expected_strategy": "tile_nearest"},
+    {"id": "V2-02", "contract": "The output has shape [N] and contains integer argmin indices along the reference dimension, one for each query.", "expected_strategy": "tile_nearest"},
+    {"id": "V2-03", "contract": "Map each query to its closest database entry and return that entry's index; distances themselves are not requested.", "expected_strategy": "tile_nearest"},
+    {"id": "V2-04", "contract": "Produce one integer per query: the number of reference points whose Euclidean distance is less than or equal to 1.0.", "expected_strategy": "tile_radius_count"},
+    {"id": "V2-05", "contract": "For each query, count all references inside the unit-radius neighborhood, including points exactly on its edge.", "expected_strategy": "tile_radius_count"},
+    {"id": "V2-06", "contract": "Return a length-N vector of neighbor totals under the condition distance(q, r) <= radius, where radius is 1.0.", "expected_strategy": "tile_radius_count"},
+    {"id": "V2-07", "contract": "Return the two nearest reference indices for every query, sorted from nearest to second-nearest.", "expected_strategy": "no_repair"},
+    {"id": "V2-08", "contract": "For each query, output the minimum Euclidean distance as a floating-point value; do not output an index.", "expected_strategy": "no_repair"},
+    {"id": "V2-09", "contract": "Keep the full rectangular table: entry [i,j] must be the distance from query i to reference j.", "expected_strategy": "no_repair"},
+    {"id": "V2-10", "contract": "Return one Boolean per query indicating whether any reference is strictly closer than 1.0. The result is a flag, not a count.", "expected_strategy": "no_repair"},
+    {"id": "V2-11", "contract": "Return the nearest reference index only when its distance is below the threshold; otherwise return sentinel -1.", "expected_strategy": "no_repair"},
+    {"id": "V2-12", "contract": "For each query return the list of every reference index inside radius 1.0, rather than the number of such references.", "expected_strategy": "no_repair"}
+  ]
+}

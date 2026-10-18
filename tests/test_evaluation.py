@@ -1,5 +1,6 @@
 import unittest
 import json
+from unittest.mock import patch
 from pathlib import Path
 
 from scripts.evaluate_strategies import evaluate, rule_strategy
@@ -30,6 +31,30 @@ class EvaluationTests(unittest.TestCase):
         fixtures = {"cases": [{"id": "H01", "contract": "x", "expected_strategy": "no_repair"}] * 2}
         with self.assertRaises(ValueError):
             evaluate_heldout(fixtures)
+
+    def test_heldout_retries_transient_failure_and_records_attempts(self):
+        fixtures = {"protocol": "test", "shared_source": "source", "size": 8,
+                    "cases": [{"id": "H01", "contract": "nearest index per query", "expected_strategy": "tile_nearest"}]}
+        responses = [
+            {"status": "error", "strategy": "tile_nearest", "http_status": 429, "explanation": "rate limited"},
+            {"status": "live", "strategy": "tile_nearest", "model": "test-model", "usage": {}}
+        ]
+        with patch("scripts.evaluate_heldout.propose", side_effect=responses) as mocked, patch("scripts.evaluate_heldout.time.sleep"):
+            report = evaluate_heldout(fixtures, live=True)
+        self.assertEqual(mocked.call_count, 2)
+        self.assertEqual(report["model_correct"], 1)
+        self.assertEqual(report["model_completed"], 1)
+        self.assertEqual(report["rows"][0]["nemotron"]["attempt_count"], 2)
+        self.assertEqual(report["rows"][0]["nemotron"]["attempts"][0]["http_status"], 429)
+
+    def test_heldout_does_not_retry_wrong_model_answer(self):
+        fixtures = {"protocol": "test", "shared_source": "source", "size": 8,
+                    "cases": [{"id": "H01", "contract": "nearest index per query", "expected_strategy": "tile_nearest"}]}
+        wrong = {"status": "live", "strategy": "no_repair", "model": "test-model", "usage": {}}
+        with patch("scripts.evaluate_heldout.propose", return_value=wrong) as mocked:
+            report = evaluate_heldout(fixtures, live=True)
+        self.assertEqual(mocked.call_count, 1)
+        self.assertFalse(report["rows"][0]["nemotron"]["correct"])
 
 
 if __name__ == "__main__":

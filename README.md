@@ -40,7 +40,7 @@ The website shows saved point-cloud measurements and the saved attention measure
 
 For a one-call model check without restarting the server, run `powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\run_live_attention_decision.ps1` in a separate PowerShell tab. It privately prompts for the key, sends the saved raw metrics without the independently selected verdict, and writes `evidence/attention-decision-live.json`. The offline counterpart is `evidence/attention-decision-offline.json` and records only the deterministic choice. The saved reports include a hash tying the decision to the source measurements, not the key.
 
-On Windows, `powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\run_live_evaluation.ps1` prompts for the key privately and runs those 12 calls in a separate process without restarting the GPU runner. It writes `evidence/heldout-live.json`, preserving the offline report. The script removes the temporary PowerShell environment copy of the key afterward. Do not paste the key into chat or put it in a command argument.
+On Windows, `powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\run_live_evaluation.ps1` prompts for the key privately and runs a fresh, separately frozen 12-case follow-up through Nebius without restarting the GPU runner. It retries only transient transport/capacity errors up to twice, records each attempt, and writes `evidence/heldout-v2-live.json`; the original report remains unchanged. The simple-rule score for this set is recorded in `evidence/heldout-v2-rule.json`. Do not paste the key into chat or put it in a command argument.
 
 ## Measurement protocol
 
