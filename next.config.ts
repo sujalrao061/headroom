@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
   outputFileTracingIncludes: {
     "/api/recorded-run": ["./evidence/local-gpu.json"],
     "/api/attention-evidence": ["./evidence/attention-gpu.json", "./evidence/attention-decision-live.json"],
-    "/api/heldout-evidence": ["./evidence/heldout-live.json"],
+    "/api/heldout-evidence": ["./evidence/heldout-live.json", "./evidence/heldout-v2-live.json"],
   },
 };
 export default nextConfig;

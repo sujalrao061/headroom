@@ -5,7 +5,7 @@ import unittest
 import urllib.error
 from unittest.mock import patch
 
-from headroom.nebius import propose, propose_attention
+from headroom.nebius import _strategy_json, propose, propose_attention
 
 
 class NebiusAdapterTests(unittest.TestCase):
@@ -35,6 +35,19 @@ class NebiusAdapterTests(unittest.TestCase):
             result = propose("nearest", "code", "indices", 256, {})
         self.assertEqual(result["status"], "live")
         self.assertEqual(result["strategy"], "tile_nearest")
+
+    def test_truncated_json_recovers_only_explicit_allowlisted_strategy(self):
+        self.assertEqual(_strategy_json('{"strategy":"no_repair","explanation":"need a sentinel') ["strategy"], "no_repair")
+        with self.assertRaises(ValueError):
+            _strategy_json("I think no_repair is probably right")
+
+    def test_request_allows_reasoning_budget_and_names_extra_semantics(self):
+        response = {"choices": [{"message": {"content": '{"strategy":"no_repair","explanation":"Conditional sentinel output"}'}}]}
+        with patch.dict(os.environ, {"NEBIUS_API_KEY": "test-token"}), patch("headroom.nebius.urllib.request.urlopen", return_value=io.BytesIO(json.dumps(response).encode())) as called:
+            propose("nearest", "code", "conditional index or -1", 256, {}, mode="source_only")
+        body = json.loads(called.call_args.args[0].data)
+        self.assertEqual(body["max_tokens"], 1024)
+        self.assertIn("sentinels", body["messages"][0]["content"])
 
     def test_radius_strategy_is_accepted(self):
         response = {"choices": [{"message": {"content": '{"strategy":"tile_radius_count","explanation":"Accumulate counts"}'}}]}

@@ -1,0 +1,19 @@
+{
+  "protocol": "Fresh follow-up set frozen after the bounded-strategy prompt and response parsing were improved. It checks wording robustness on one fixed allocation pattern only; it is not an executable-workload, GPU-correctness, or universal generalization benchmark. Transient service failures may be retried up to twice, with every attempt recorded. Wrong or unsupported model answers are not retried.",
+  "shared_source": "def workload(query, reference):\n    delta = query[:, None, :] - reference[None, :, :]\n    distance = torch.sqrt(torch.sum(delta * delta, dim=-1))\n    return postprocess(distance)",
+  "size": 1024,
+  "cases": [
+    {"id": "V3-01", "contract": "For each query, output only the zero-based row number of its closest reference row. Resolve equal distances by taking the earliest reference row.", "expected_strategy": "tile_nearest"},
+    {"id": "V3-02", "contract": "Return argmin(distance, dim=1): an integer vector with one nearest-reference position for each query.", "expected_strategy": "tile_nearest"},
+    {"id": "V3-03", "contract": "The caller needs one reference index per query, selected by minimum Euclidean distance; no distance values are part of the result.", "expected_strategy": "tile_nearest"},
+    {"id": "V3-04", "contract": "Produce the closest reference's input row ID for every query, using first occurrence when there is a tie.", "expected_strategy": "tile_nearest"},
+    {"id": "V3-05", "contract": "For each query, return an integer count of reference points at distance less than or equal to radius 1.0.", "expected_strategy": "tile_radius_count"},
+    {"id": "V3-06", "contract": "Output one total per query for all reference points in the closed Euclidean ball of radius R; here R equals 1.0.", "expected_strategy": "tile_radius_count"},
+    {"id": "V3-07", "contract": "Count how many reference rows satisfy distance(query, reference) <= 1.0, separately for every query.", "expected_strategy": "tile_radius_count"},
+    {"id": "V3-08", "contract": "Return exactly N integers. Entry i is the number of reference points no farther than one unit from query i.", "expected_strategy": "tile_radius_count"},
+    {"id": "V3-09", "contract": "Return the three nearest reference indices for each query in increasing distance order.", "expected_strategy": "no_repair"},
+    {"id": "V3-10", "contract": "Return each query's minimum distance as a float; the index is not needed.", "expected_strategy": "no_repair"},
+    {"id": "V3-11", "contract": "Return the nearest reference row number if its distance is below one, and -1 otherwise.", "expected_strategy": "no_repair"},
+    {"id": "V3-12", "contract": "For each query, output true if at least one reference is within radius 1.0, false otherwise. Do not output counts.", "expected_strategy": "no_repair"}
+  ]
+}

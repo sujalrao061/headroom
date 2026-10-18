@@ -1,6 +1,7 @@
 """Server-side Nemotron strategy proposal; credentials never reach the browser."""
 import json
 import os
+import re
 import urllib.error
 import urllib.request
 
@@ -16,6 +17,12 @@ def _strategy_json(content: str, allowed=("tile_nearest", "tile_radius_count", "
             continue
         if isinstance(value, dict) and value.get("strategy") in allowed:
             return value
+    # Recover the explicit allowlisted field if the model's explanation is cut
+    # off at the token limit. Never infer a strategy from free-form prose.
+    names = "|".join(re.escape(name) for name in allowed)
+    match = re.search(r'["\']?strategy["\']?\s*:\s*["\']?(' + names + r')\b', content, re.IGNORECASE)
+    if match:
+        return {"strategy": match.group(1)}
     raise ValueError("Nemotron did not return a supported strategy object")
 
 
@@ -30,10 +37,10 @@ def propose(case_id: str, source: str, contract: str, size: int, evidence: dict,
     body = {
         "model": model,
         "temperature": 0,
-        "max_tokens": 512,
+        "max_tokens": 1024,
         "messages": [
-            {"role": "system", "content": "You diagnose GPU memory pressure. Return JSON only with keys strategy and explanation. Strategy must be tile_nearest, tile_radius_count, or no_repair. Choose tile_nearest only when the contract requires one nearest index per query. Choose tile_radius_count only when it requires a count of references within a radius per query. Choose no_repair when the contract requires every pairwise distance or when neither tiled reduction preserves the output. Never write executable code. A separate validator decides acceptance."},
-            {"role": "user", "content": f"Workload: {case_id}; size: {size}x{size}; output contract: {contract}. Source:\n{source}\n" + (f"Measured evidence and independent candidate feedback: {json.dumps(evidence)}\nThe physical GPU did not necessarily OOM. " if mode == "evidence" else "No measured execution evidence is supplied. ") + "Which bounded strategy fits the contract?"},
+            {"role": "system", "content": "You classify whether one of two exact, fixed reductions preserves a PyTorch output contract. Return one JSON object with keys strategy and explanation; strategy must be tile_nearest, tile_radius_count, or no_repair. The only supported nearest output is exactly one zero-based nearest-reference index per query, with the first index on ties. The only supported radius output is exactly one count per query of all references at Euclidean distance <= the stated radius. Choose tile_nearest or tile_radius_count only when the full required output matches that exact contract. Choose no_repair for every extra condition or changed output, including top-k, distances, full matrices, booleans, unique counts, thresholds, sentinels, or conditional indices. Do not assume a simple index reduction can preserve extra postprocessing. Never write code. A separate validator decides acceptance."},
+            {"role": "user", "content": f"Workload: {case_id}; size: {size}x{size}; exact output contract: {contract}. Source:\n{source}\n" + (f"Measured evidence and independent candidate feedback: {json.dumps(evidence)}\nThe physical GPU did not necessarily OOM. " if mode == "evidence" else "No measured execution evidence is supplied. ") + "Classify the contract against the two exact supported outputs. Return the JSON object now."},
         ],
     }
     request = urllib.request.Request(

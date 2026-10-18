@@ -20,9 +20,9 @@ try {
         throw 'That does not look like a complete Nebius Token Factory API key. No model call was made.'
     }
     Write-Host 'Running the fresh 12-case held-out evaluation through Nebius. The key is not saved in the report.'
-    & $pythonExe -m scripts.evaluate_heldout --live --input evidence/heldout-contracts-v2.json --output evidence/heldout-v2-live.json
+    & $pythonExe -m scripts.evaluate_heldout --live --input evidence/heldout-contracts-v3.json --output evidence/heldout-v3-live.json
     if ($LASTEXITCODE -ne 0) { throw 'The live evaluation did not complete.' }
-    Write-Host 'Fresh live results saved to evidence\heldout-v2-live.json; the original report is unchanged.'
+    Write-Host 'Fresh live results saved to evidence\heldout-v3-live.json; earlier reports are unchanged.'
 }
 finally {
     Remove-Item Env:NEBIUS_API_KEY -ErrorAction SilentlyContinue

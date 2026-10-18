@@ -28,7 +28,7 @@ The public [correctness gauntlet](evidence/contract-gauntlet.json) adds 490 pass
 
 The demo also exposes a frozen [12-case wording evaluation](evidence/heldout-live.json): a simple keyword rule matched 5 labels, while Nemotron returned 11 correct usable decisions and one request failed. Each case varies the wording of the same known allocation/output-contract task. This is limited evidence of wording robustness, not arbitrary workload reasoning, GPU correctness, or a fair comparison with a stronger baseline.
 
-A separate follow-up wording set and retry-aware evaluation harness are now frozen in [`evidence/heldout-contracts-v2.json`](evidence/heldout-contracts-v2.json); its simple-rule baseline matched 6/12. The fresh live Nemotron run has not yet been captured, so the original 5/12 versus 11/12 report remains the only live comparison. This follow-up uses the same narrow workload scope and cannot support a 10/10 claim unless the measured results actually earn it.
+A second frozen wording set scored Nemotron 10/12 (11/12 requests completed) against 6/12 for the simple rule; one model response failed parsing and one extra-semantics contract was misclassified. The report is [`evidence/heldout-v2-live.json`](evidence/heldout-v2-live.json). After tightening the supported-contract instructions and response handling, a third fresh set was frozen in [`evidence/heldout-contracts-v3.json`](evidence/heldout-contracts-v3.json), with a 4/12 rule baseline. Its live run has not yet been captured. All these tests use wording variants for one fixed allocation pattern; they do not evaluate unfamiliar executable workloads or general GPU repair.
 
 ## Architecture and safety
 

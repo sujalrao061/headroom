@@ -1,0 +1,107 @@
+{
+  "captured_at_utc": "2026-10-18T17:38:29.384852+00:00",
+  "protocol": "Fresh follow-up set frozen after the bounded-strategy prompt and response parsing were improved. It checks wording robustness on one fixed allocation pattern only; it is not an executable-workload, GPU-correctness, or universal generalization benchmark. Transient service failures may be retried up to twice, with every attempt recorded. Wrong or unsupported model answers are not retried.",
+  "live_model_requested": false,
+  "total_cases": 12,
+  "rule_correct": 4,
+  "model_correct": null,
+  "model_completed": 0,
+  "rows": [
+    {
+      "id": "V3-01",
+      "expected_strategy": "tile_nearest",
+      "rule": {
+        "strategy": "no_repair",
+        "correct": false
+      }
+    },
+    {
+      "id": "V3-02",
+      "expected_strategy": "tile_nearest",
+      "rule": {
+        "strategy": "no_repair",
+        "correct": false
+      }
+    },
+    {
+      "id": "V3-03",
+      "expected_strategy": "tile_nearest",
+      "rule": {
+        "strategy": "tile_nearest",
+        "correct": true
+      }
+    },
+    {
+      "id": "V3-04",
+      "expected_strategy": "tile_nearest",
+      "rule": {
+        "strategy": "no_repair",
+        "correct": false
+      }
+    },
+    {
+      "id": "V3-05",
+      "expected_strategy": "tile_radius_count",
+      "rule": {
+        "strategy": "no_repair",
+        "correct": false
+      }
+    },
+    {
+      "id": "V3-06",
+      "expected_strategy": "tile_radius_count",
+      "rule": {
+        "strategy": "no_repair",
+        "correct": false
+      }
+    },
+    {
+      "id": "V3-07",
+      "expected_strategy": "tile_radius_count",
+      "rule": {
+        "strategy": "no_repair",
+        "correct": false
+      }
+    },
+    {
+      "id": "V3-08",
+      "expected_strategy": "tile_radius_count",
+      "rule": {
+        "strategy": "no_repair",
+        "correct": false
+      }
+    },
+    {
+      "id": "V3-09",
+      "expected_strategy": "no_repair",
+      "rule": {
+        "strategy": "no_repair",
+        "correct": true
+      }
+    },
+    {
+      "id": "V3-10",
+      "expected_strategy": "no_repair",
+      "rule": {
+        "strategy": "no_repair",
+        "correct": true
+      }
+    },
+    {
+      "id": "V3-11",
+      "expected_strategy": "no_repair",
+      "rule": {
+        "strategy": "no_repair",
+        "correct": true
+      }
+    },
+    {
+      "id": "V3-12",
+      "expected_strategy": "no_repair",
+      "rule": {
+        "strategy": "tile_radius_count",
+        "correct": false
+      }
+    }
+  ]
+}
