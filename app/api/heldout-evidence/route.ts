@@ -31,7 +31,8 @@ export async function GET() {
   try {
     const original = await readReport("heldout-live.json", "Original frozen set");
     const followUp = await readReport("heldout-v2-live.json", "Fresh follow-up set");
-    return NextResponse.json({ reports: [original, followUp] }, { headers: { "Cache-Control": "no-store" } });
+    const latest = await readReport("heldout-v3-live.json", "Latest fresh set");
+    return NextResponse.json({ reports: [original, followUp, latest] }, { headers: { "Cache-Control": "no-store" } });
   } catch {
     return NextResponse.json({ error: "Saved model evaluations are unavailable." }, { status: 404 });
   }
